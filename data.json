@@ -1,0 +1,323 @@
+{
+ "o21": {
+  "table": [
+   {
+    "pos": 1,
+    "team": "Feyenoord O21",
+    "gs": 4,
+    "dv": 14,
+    "dt": 3,
+    "ds": 11,
+    "pt": 12
+   },
+   {
+    "pos": 2,
+    "team": "De Graafschap O21",
+    "gs": 5,
+    "dv": 7,
+    "dt": 5,
+    "ds": 2,
+    "pt": 9
+   },
+   {
+    "pos": 3,
+    "team": "PEC Zwolle O21",
+    "gs": 5,
+    "dv": 7,
+    "dt": 7,
+    "ds": 0,
+    "pt": 9
+   },
+   {
+    "pos": 4,
+    "team": "SC Cambuur O21",
+    "gs": 4,
+    "dv": 12,
+    "dt": 5,
+    "ds": 7,
+    "pt": 7
+   },
+   {
+    "pos": 5,
+    "team": "FC Groningen O21",
+    "gs": 4,
+    "dv": 8,
+    "dt": 6,
+    "ds": 2,
+    "pt": 7
+   },
+   {
+    "pos": 6,
+    "team": "FC Twente / Heracles O21",
+    "gs": 5,
+    "dv": 4,
+    "dt": 12,
+    "ds": -8,
+    "pt": 4
+   },
+   {
+    "pos": 7,
+    "team": "Go Ahead Eagles O21",
+    "gs": 5,
+    "dv": 4,
+    "dt": 14,
+    "ds": -10,
+    "pt": 2
+   },
+   {
+    "pos": 8,
+    "team": "Willem II O21",
+    "gs": 4,
+    "dv": 5,
+    "dt": 9,
+    "ds": -4,
+    "pt": 1
+   }
+  ],
+  "matches": {
+   "Feyenoord O21": {
+    "last": {
+     "date": "2026-09-19",
+     "time": "",
+     "home": "Feyenoord O21",
+     "away": "PEC Zwolle O21",
+     "score": "4-0"
+    },
+    "next": [
+     {
+      "date": "2026-10-10",
+      "time": "14:00",
+      "home": "FC Groningen O21",
+      "away": "Feyenoord O21",
+      "score": null
+     },
+     {
+      "date": "2026-10-17",
+      "time": "12:15",
+      "home": "Feyenoord O21",
+      "away": "De Graafschap O21",
+      "score": null
+     }
+    ]
+   }
+  }
+ },
+ "td": {
+  "table": [
+   {
+    "pos": 1,
+    "team": "Quick Boys",
+    "gs": 7,
+    "dv": 19,
+    "dt": 4,
+    "ds": 15,
+    "pt": 18
+   },
+   {
+    "pos": 2,
+    "team": "De Treffers",
+    "gs": 7,
+    "dv": 19,
+    "dt": 6,
+    "ds": 13,
+    "pt": 15
+   },
+   {
+    "pos": 3,
+    "team": "Kozakken Boys",
+    "gs": 7,
+    "dv": 18,
+    "dt": 11,
+    "ds": 7,
+    "pt": 14
+   },
+   {
+    "pos": 4,
+    "team": "IJsselmeervogels",
+    "gs": 6,
+    "dv": 9,
+    "dt": 3,
+    "ds": 6,
+    "pt": 13
+   },
+   {
+    "pos": 5,
+    "team": "Jong Sparta",
+    "gs": 7,
+    "dv": 21,
+    "dt": 12,
+    "ds": 9,
+    "pt": 12
+   },
+   {
+    "pos": 6,
+    "team": "HHC",
+    "gs": 7,
+    "dv": 13,
+    "dt": 11,
+    "ds": 2,
+    "pt": 11
+   },
+   {
+    "pos": 7,
+    "team": "Barendrecht",
+    "gs": 7,
+    "dv": 12,
+    "dt": 10,
+    "ds": 2,
+    "pt": 11
+   },
+   {
+    "pos": 8,
+    "team": "Katwijk",
+    "gs": 7,
+    "dv": 10,
+    "dt": 8,
+    "ds": 2,
+    "pt": 11
+   },
+   {
+    "pos": 9,
+    "team": "AFC",
+    "gs": 7,
+    "dv": 11,
+    "dt": 12,
+    "ds": -1,
+    "pt": 10
+   },
+   {
+    "pos": 10,
+    "team": "Spakenburg",
+    "gs": 7,
+    "dv": 9,
+    "dt": 11,
+    "ds": -2,
+    "pt": 10
+   },
+   {
+    "pos": 11,
+    "team": "Volendam (amateurs)",
+    "gs": 7,
+    "dv": 9,
+    "dt": 13,
+    "ds": -4,
+    "pt": 9
+   },
+   {
+    "pos": 12,
+    "team": "Rijnsburgse Boys",
+    "gs": 7,
+    "dv": 11,
+    "dt": 21,
+    "ds": -10,
+    "pt": 7
+   },
+   {
+    "pos": 13,
+    "team": "GVVV",
+    "gs": 6,
+    "dv": 11,
+    "dt": 16,
+    "ds": -5,
+    "pt": 6
+   },
+   {
+    "pos": 14,
+    "team": "HFC",
+    "gs": 7,
+    "dv": 9,
+    "dt": 13,
+    "ds": -4,
+    "pt": 6
+   },
+   {
+    "pos": 15,
+    "team": "Hoek",
+    "gs": 7,
+    "dv": 8,
+    "dt": 12,
+    "ds": -4,
+    "pt": 6
+   },
+   {
+    "pos": 16,
+    "team": "Kloetinge",
+    "gs": 7,
+    "dv": 10,
+    "dt": 17,
+    "ds": -7,
+    "pt": 6
+   },
+   {
+    "pos": 17,
+    "team": "Jong Almere City",
+    "gs": 7,
+    "dv": 11,
+    "dt": 16,
+    "ds": -5,
+    "pt": 4
+   },
+   {
+    "pos": 18,
+    "team": "Rohda Raalte",
+    "gs": 7,
+    "dv": 6,
+    "dt": 20,
+    "ds": -14,
+    "pt": 1
+   }
+  ],
+  "matches": {
+   "Jong Sparta": {
+    "last": {
+     "date": "2026-09-26",
+     "time": "",
+     "home": "Jong Sparta",
+     "away": "Hoek",
+     "score": "3-0"
+    },
+    "next": [
+     {
+      "date": "2026-10-03",
+      "time": "15:00",
+      "home": "Barendrecht",
+      "away": "Jong Sparta",
+      "score": null
+     },
+     {
+      "date": "2026-10-10",
+      "time": "15:00",
+      "home": "Jong Sparta",
+      "away": "Jong Almere City",
+      "score": null
+     }
+    ]
+   },
+   "Jong Almere City": {
+    "last": {
+     "date": "2026-09-26",
+     "time": "",
+     "home": "Jong Almere City",
+     "away": "Barendrecht",
+     "score": "1-4"
+    },
+    "next": [
+     {
+      "date": "2026-10-03",
+      "time": "14:30",
+      "home": "Volendam (amateurs)",
+      "away": "Jong Almere City",
+      "score": null
+     },
+     {
+      "date": "2026-10-10",
+      "time": "15:00",
+      "home": "Jong Sparta",
+      "away": "Jong Almere City",
+      "score": null
+     }
+    ]
+   }
+  }
+ }
+}

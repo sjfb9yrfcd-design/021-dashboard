@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feyenoord O21 en Jong-teams Tweede Divisie</title>
+<style>
+:root{--bg:#ffffff;--card:#ffffff;--ink:#1a1214;--mute:#7a5f63;--line:#f0d4d6;--red:#d4111c;--redd:#9e0c14;--hi:#fde3e5;--jong:#fde3e5;--jongink:#9e0c14;--win:#1e8a4c;--draw:#8a6d12;--loss:#d4111c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a0c0e;--card:#241214;--ink:#fff5f5;--mute:#d0a9ad;--line:#4a2226;--red:#ee2b36;--redd:#ee2b36;--hi:#4a1a1e;--jong:#4a1a1e;--jongink:#ff8a91;--win:#4cc07f;--draw:#d2bd4d;--loss:#ff6a72}}
+:root[data-theme="dark"]{--bg:#1a0c0e;--card:#241214;--ink:#fff5f5;--mute:#d0a9ad;--line:#4a2226;--red:#ee2b36;--redd:#ee2b36;--hi:#4a1a1e;--jong:#4a1a1e;--jongink:#ff8a91;--win:#4cc07f;--draw:#d2bd4d;--loss:#ff6a72}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:8px 16px 40px}
+.top{background:var(--red);color:#fff;padding:22px 16px 18px;border-bottom:5px solid var(--redd)}
+.top .in{max-width:980px;margin:0 auto}
+h1{font-size:28px;margin:0 0 4px;letter-spacing:-.01em}
+.sub{margin:0;opacity:.92}
+h2{font-size:19px;margin:28px 0 12px;padding:8px 12px;background:var(--red);color:#fff;border-radius:8px}
+h2.j{background:var(--redd)}
+h3{font-size:16px;margin:0 0 10px;color:var(--red)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:14px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:#fff;background:var(--red);font-size:13px;border-bottom:0}
+h2.j~.grid th{background:var(--redd)}
+th:nth-child(2),td:nth-child(2){text-align:left;width:100%}
+th:first-child,td:first-child{text-align:center;width:36px}
+tr.me td{background:var(--hi);font-weight:700}
+tr.jong td{background:var(--jong);font-weight:700}
+tr.me td:first-child{box-shadow:inset 3px 0 var(--red)}
+tr.jong td:first-child{box-shadow:inset 3px 0 var(--jongink)}
+td.pt{font-weight:700}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:760px){.grid.two{grid-template-columns:1fr 1fr}}
+.m{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.m:first-of-type{border-top:0}
+.d{font-size:13px;color:var(--mute);line-height:1.25}
+.t{font-weight:500}
+.t b{font-weight:700}
+.s{font-weight:700;min-width:62px;text-align:center;padding:3px 8px;border-radius:6px;border:1px solid var(--line)}
+.s.w{color:var(--win);border-color:var(--win)}.s.n{background:var(--hi)}.s.l{color:var(--loss);border-color:var(--loss)}.s.g{color:var(--draw);border-color:var(--draw)}
+.s.n{color:var(--mute);font-weight:500;font-size:13px}
+.lab{font-size:13px;color:var(--mute);margin:12px 0 2px;font-weight:600}
+.lab:first-of-type{margin-top:0}
+.warn{background:var(--hi);border:2px solid var(--red);border-radius:8px;padding:10px 12px;margin:16px 0 0;font-size:14px}
+footer{margin-top:28px;color:var(--mute);font-size:13px}
+</style>
+</head>
+<body>
+<header class="top"><div class="in"><h1>Feyenoord O21 en de Jong-teams</h1>
+<p class="sub">Laatst bijgewerkt: {{UPDATED}}</p></div></header>
+<main>
+{{WARNINGS}}
+<h2>Feyenoord O21: najaarscompetitie</h2>
+<div class="grid two">
+ <div class="card scroll">{{O21_TABLE}}</div>
+ <div class="card">{{O21_MATCHES}}</div>
+</div>
+
+<h2 class="j">Tweede Divisie: Jong Sparta en Jong Almere City</h2>
+<div class="grid two">
+ <div class="card scroll">{{TD_TABLE}}</div>
+ <div style="display:grid;gap:14px;align-content:start">{{TD_CARDS}}</div>
+</div>
+
+<footer>GS gespeeld, DV doelpunten voor, DT doelpunten tegen, DS doelsaldo, Pt punten. Bronnen: feyenoord.com (O21) en vi.nl (Tweede Divisie). Programma's kunnen verschuiven.</footer>
+</main>
+</body>
+</html>
