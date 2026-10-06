@@ -269,7 +269,13 @@
   ],
   "matches": {
    "Jong Sparta": {
-    "last": null,
+    "last": {
+     "date": "2026-10-03",
+     "time": "",
+     "home": "Barendrecht",
+     "away": "Jong Sparta",
+     "score": "3-2"
+    },
     "next": [
      {
       "date": "2026-10-10",
@@ -288,7 +294,13 @@
     ]
    },
    "Jong Almere City": {
-    "last": null,
+    "last": {
+     "date": "2026-10-03",
+     "time": "",
+     "home": "Volendam (amateurs)",
+     "away": "Jong Almere City",
+     "score": "1-4"
+    },
     "next": [
      {
       "date": "2026-10-10",
