@@ -46,6 +46,12 @@ SECTIONS = {
     },
 }
 
+# Alleen voor de tabellen: lange namen korter weergeven (links de naam op de site, rechts de korte naam)
+SHORT_NAMES = {
+    "FC Twente / Heracles O21": "Twente/Heracles O21",
+    "Volendam (amateurs)": "Volendam (am.)",
+}
+
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; o21-dashboard/1.0; persoonlijk project)"}
 MONTHS = {"jan": 1, "feb": 2, "mrt": 3, "maa": 3, "apr": 4, "mei": 5, "jun": 6,
           "jul": 7, "aug": 8, "sep": 9, "okt": 10, "nov": 11, "dec": 12}
@@ -234,14 +240,17 @@ def match_block(info, focus):
     return h
 
 
-def table_html(rows, highlight, cls):
+def table_html(rows, highlight, cls, strip=""):
     head = ("<thead><tr><th>#</th><th>Team</th><th title='Gespeeld'>GS</th><th>DV</th>"
             "<th>DT</th><th>DS</th><th>Pt</th></tr></thead>")
     body = ""
     for r in rows:
         row_cls = f' class="{cls}"' if any(h.lower() == r["team"].lower() for h in highlight) else ""
         ds = f'{r["ds"]:+d}' if r["ds"] else "0"
-        body += (f'<tr{row_cls}><td>{r["pos"]}</td><td>{esc(r["team"])}</td><td>{r["gs"]}</td>'
+        shown = SHORT_NAMES.get(r["team"], r["team"])
+        if strip and shown.endswith(strip):
+            shown = shown[: -len(strip)]
+        body += (f'<tr{row_cls}><td>{r["pos"]}</td><td title="{esc(r["team"])}">{esc(shown)}</td><td>{r["gs"]}</td>'
                  f'<td>{r["dv"]}</td><td>{r["dt"]}</td><td>{ds}</td><td class="pt">{r["pt"]}</td></tr>')
     return f"<table>{head}<tbody>{body}</tbody></table>"
 
@@ -257,7 +266,7 @@ def build_html(data, warnings):
     return (t.replace("{{UPDATED}}", esc(now))
             .replace("{{WARNINGS}}", warn)
             .replace("{{MOOD}}", "")
-            .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me"))
+            .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me", " O21"))
             .replace("{{O21_MATCHES}}", match_block(o["matches"]["Feyenoord O21"], "Feyenoord O21"))
             .replace("{{TD_TABLE}}", table_html(d["table"], SECTIONS["td"]["highlight"], "jong"))
             .replace("{{TD_CARDS}}", cards))
