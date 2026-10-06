@@ -27,6 +27,7 @@ th,td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line);white
 th{font-weight:600;color:#fff;background:var(--red);font-size:13px;border-bottom:0}
 h2.j~.grid th{background:var(--redd)}
 th:nth-child(2),td:nth-child(2){text-align:left;width:100%}
+td:nth-child(2){max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 th:first-child,td:first-child{text-align:center;width:36px}
 tr.me td{background:var(--hi);font-weight:700}
 tr.jong td{background:var(--jong);font-weight:700}
@@ -47,6 +48,7 @@ td.pt{font-weight:700}
 .lab:first-of-type{margin-top:0}
 .warn{background:var(--hi);border:2px solid var(--red);border-radius:8px;padding:10px 12px;margin:16px 0 0;font-size:14px}
 footer{margin-top:28px;color:var(--mute);font-size:13px}
+@media(max-width:480px){main{padding-left:10px;padding-right:10px}.card{padding:10px}th,td{padding:6px 4px;font-size:13px}th:first-child,td:first-child{width:26px}}
 </style>
 </head>
 <body>
