@@ -35,8 +35,12 @@ SECTIONS = {
     "td": {
         "stand_url": "https://www.vi.nl/competities/tweede-divisie/2026-2027/stand",
         "focus": {
-            "Jong Sparta": ["https://www.vi.nl/clubs/jong-sparta/wedstrijden"],
-            "Jong Almere City": ["https://www.vi.nl/clubs/jong-almere-city/wedstrijden"],
+            "Jong Sparta": [
+                "https://www.vi.nl/clubs/jong-sparta/wedstrijden",
+            ],
+            "Jong Almere City": [
+                "https://www.vi.nl/clubs/jong-almere-city/wedstrijden",
+            ],
         },
         "highlight": ["Jong Sparta", "Jong Almere City"],
     },
@@ -137,7 +141,7 @@ def find_teams(text, names):
                 taken.append(span)
                 found.append((i, name))
             start = i + 1
-    return [n for _, n in sorted(found)]
+    return list(dict.fromkeys(n for _, n in sorted(found)))
 
 
 def parse_matches(soup, names, focus):
@@ -164,13 +168,24 @@ def parse_matches(soup, names, focus):
         clean2 = RE_TIME.sub(" ", clean)
         clean2 = RE_DM_NAME.sub(lambda m: " " if MONTHS.get(m[2][:3].lower()) else m[0], clean2)
         sc = RE_SCORE.search(clean2)
+        score = f"{sc[1]}-{sc[2]}" if sc else None
+        if score is None and date <= dt.date.today():
+            # sommige sites zetten de twee cijfers los van elkaar, zonder streepje
+            rest = clean2
+            for t_ in teams:
+                rest = re.sub(re.escape(t_), " ", rest, flags=re.I)
+            nums = re.findall(r"(?<![\w'])(\d{1,2})(?![\w'])", rest)
+            if len(nums) == 2:
+                score = f"{nums[0]}-{nums[1]}"
         key = (date, teams[0], teams[1])
         if key in seen:
             continue
         seen.add(key)
         out.append({"date": date.isoformat(), "time": f"{int(tm[1]):02d}:{tm[2]}" if tm else "",
                     "home": teams[0], "away": teams[1],
-                    "score": f"{sc[1]}-{sc[2]}" if sc else None})
+                    "score": score})
+        if DEBUG:
+            print("   gevonden rij:", repr(text[:200]))
     return out
 
 
@@ -241,6 +256,7 @@ def build_html(data, warnings):
     now = dt.datetime.now(dt.timezone.utc).astimezone().strftime("%d-%m-%Y %H:%M")
     return (t.replace("{{UPDATED}}", esc(now))
             .replace("{{WARNINGS}}", warn)
+            .replace("{{MOOD}}", "")
             .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me"))
             .replace("{{O21_MATCHES}}", match_block(o["matches"]["Feyenoord O21"], "Feyenoord O21"))
             .replace("{{TD_TABLE}}", table_html(d["table"], SECTIONS["td"]["highlight"], "jong"))
@@ -260,6 +276,13 @@ def scrape_section(key, today):
                 found += parse_matches(fetch(url), names, focus)
             except Exception as e:  # een club-pagina mag falen zonder de rest te breken
                 print(f"WAARSCHUWING {focus}: {url}: {e}")
+        merged = {}
+        for m in found:
+            k = (m["date"], m["home"], m["away"])
+            old = merged.get(k)
+            if old is None or (m["score"] and not old["score"]) or (m["time"] and not old["time"] and not old["score"]):
+                merged[k] = m
+        found = list(merged.values())
         matches[focus] = pick(found, today)
         if DEBUG:
             print(f"\n{focus}: {len(found)} wedstrijden gevonden")
