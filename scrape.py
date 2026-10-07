@@ -83,10 +83,43 @@ def to_int(s):
     return int(s) if re.fullmatch(r"-?\d+", s) else None
 
 
+def layouts(nums, need_goals):
+    """Alle indelingen (kolompositie van gespeeld, w/g/v, punten, doelpunten) die rekenkundig kloppen.
+
+    Controle: gewonnen + gelijk + verloren = gespeeld, punten = 3 x gewonnen + gelijk,
+    en doelpunten voor - tegen = doelsaldo.
+    """
+    n, out = len(nums), []
+    for gi in range(n):
+        for i in range(n - 2):
+            if gi in (i, i + 1, i + 2) or nums[i] + nums[i + 1] + nums[i + 2] != nums[gi]:
+                continue
+            p = 3 * nums[i] + nums[i + 1]
+            for j in range(n):
+                if nums[j] != p or j in (gi, i, i + 1, i + 2):
+                    continue
+                used = {gi, i, i + 1, i + 2, j}
+                if not need_goals:
+                    out.append((gi, i, j, None, None))
+                    continue
+                for x in range(n - 1):
+                    y = x + 1
+                    if x in used or y in used:
+                        continue
+                    if any(c not in used | {x, y} and nums[c] == nums[x] - nums[y] for c in range(n)):
+                        out.append((gi, i, j, x, y))
+    return out
+
+
 def parse_standings(soup):
-    """Zoekt de eerste tabel met rijen als: positie, team, cijfers..., punten."""
+    """Zoekt de eerste tabel met rijen als: positie, team, cijfers..., punten.
+
+    De kolomvolgorde hoeft niet bekend te zijn: per tabel wordt de indeling gekozen die voor de meeste
+    rijen rekenkundig klopt.
+    """
+    from collections import Counter
     for table in soup.find_all("table"):
-        rows = []
+        raw = []
         for tr in table.find_all("tr"):
             cells = [c.get_text(" ", strip=True) for c in tr.find_all(["td", "th"])]
             if len(cells) < 5 or to_int(cells[0]) is None:
@@ -100,17 +133,35 @@ def parse_standings(soup):
             nums = [to_int(c) for c in rest if to_int(c) is not None]
             if len(nums) < 3:
                 continue
-            gs, pt = nums[0], nums[-1]
-            if goals:
-                dv, dt_ = [int(x) for x in re.split(r"\s*[-:]\s*", goals)]
-            elif len(nums) >= 4:
-                dv, dt_ = nums[-4], nums[-3]
-            else:
-                continue
-            rows.append({"pos": to_int(cells[0]), "team": cells[team_idx], "gs": gs,
+            raw.append((to_int(cells[0]), cells[team_idx], nums, goals, cells))
+        if len(raw) < 4:
+            continue
+        votes = Counter()
+        for _, _, nums, goals, _ in raw:
+            for lay in set(layouts(nums, goals is None)):
+                votes[lay] += 1
+        best = votes.most_common(1)[0][0] if votes else None
+        if best and votes[best] < 0.6 * len(raw):  # te weinig rijen sluiten aan: terugvallen op de eenvoudige indeling
+            best = None
+        rows = []
+        for pos, team, nums, goals, cells in raw:
+            if best and len(nums) > max(i for i in best if i is not None):
+                gi, i, j, x, y = best
+                gs, pt = nums[gi], nums[j]
+                dv, dt_ = ([int(v) for v in re.split(r"\s*[-:]\s*", goals)] if goals else [nums[x], nums[y]])
+            else:  # terugval als er geen sluitende indeling is
+                gs, pt = nums[0], nums[-1]
+                if goals:
+                    dv, dt_ = [int(v) for v in re.split(r"\s*[-:]\s*", goals)]
+                elif len(nums) >= 4:
+                    dv, dt_ = nums[-4], nums[-3]
+                else:
+                    continue
+            if DEBUG and len(rows) < 3:
+                print("   stand rij:", cells, "->", gs, dv, dt_, pt)
+            rows.append({"pos": pos, "team": team, "gs": gs,
                          "dv": dv, "dt": dt_, "ds": dv - dt_, "pt": pt})
-        if len(rows) >= 4:
-            return rows
+        return rows
     raise ValueError("geen standtabel gevonden")
 
 
@@ -218,12 +269,14 @@ def team_html(name, focus):
     return f"<b>{esc(name)}</b>" if name == focus else esc(name)
 
 
-def match_row(m, focus):
+def match_row(m, focus, invert=False):
     cls, label = "n", ""
     if m["score"]:
         a, b = [int(x) for x in m["score"].split("-")]
         mine, theirs = (a, b) if m["home"] == focus else (b, a)
         cls = "w" if mine > theirs else "l" if mine < theirs else "g"
+        if invert:  # bij de Jong-teams is een verlies gunstig voor Feyenoord
+            cls = {"w": "l", "l": "w"}.get(cls, cls)
         label = m["score"]
     else:
         label = "thuis" if m["home"] == focus else "uit"
@@ -232,11 +285,11 @@ def match_row(m, focus):
             f'<div class="s {cls}">{esc(label)}</div></div>')
 
 
-def match_block(info, focus):
+def match_block(info, focus, invert=False):
     h = '<div class="lab">Vorige uitslag</div>'
-    h += match_row(info["last"], focus) if info.get("last") else '<div class="d">Niet gevonden</div>'
+    h += match_row(info["last"], focus, invert) if info.get("last") else '<div class="d">Niet gevonden</div>'
     h += '<div class="lab">Volgende wedstrijden</div>'
-    h += "".join(match_row(m, focus) for m in info.get("next", [])) or '<div class="d">Niet gevonden</div>'
+    h += "".join(match_row(m, focus, invert) for m in info.get("next", [])) or '<div class="d">Niet gevonden</div>'
     return h
 
 
@@ -255,17 +308,32 @@ def table_html(rows, highlight, cls, strip=""):
     return f"<table>{head}<tbody>{body}</tbody></table>"
 
 
+JONG_LOWER_THAN = 9  # een Jong-team moet lager staan dan deze plek (dus 10e of lager)
+TEXT_UP = "himmelhoch jauchzend"
+TEXT_DOWN = "zum Tode betrübt"
+
+
+def mood_html(data):
+    """Feyenoord O21 eerste en minstens een Jong-team lager dan plek 9: blij. Anders: bedroefd."""
+    first = any(r["team"] == "Feyenoord O21" and r["pos"] == 1 for r in data["o21"]["table"])
+    jong_low = any(r["team"] in SECTIONS["td"]["highlight"] and r["pos"] > JONG_LOWER_THAN
+                   for r in data["td"]["table"])
+    if first and jong_low:
+        return f'<div class="banner up">{esc(TEXT_UP)}</div>'
+    return f'<div class="banner down">{esc(TEXT_DOWN)}</div>'
+
+
 def build_html(data, warnings):
     t = TEMPLATE.read_text(encoding="utf-8")
     o, d = data["o21"], data["td"]
     cards = "".join(
-        f'<div class="card"><h3>{esc(f)}</h3>{match_block(d["matches"].get(f, {}), f)}</div>'
+        f'<div class="card"><h3>{esc(f)}</h3>{match_block(d["matches"].get(f, {}), f, invert=True)}</div>'
         for f in SECTIONS["td"]["focus"])
     warn = "".join(f'<div class="warn">{esc(w)}</div>' for w in warnings)
     now = dt.datetime.now(dt.timezone.utc).astimezone().strftime("%d-%m-%Y %H:%M")
     return (t.replace("{{UPDATED}}", esc(now))
             .replace("{{WARNINGS}}", warn)
-            .replace("{{MOOD}}", "")
+            .replace("{{MOOD}}", mood_html(data))
             .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me", " O21"))
             .replace("{{O21_MATCHES}}", match_block(o["matches"]["Feyenoord O21"], "Feyenoord O21"))
             .replace("{{TD_TABLE}}", table_html(d["table"], SECTIONS["td"]["highlight"], "jong"))
