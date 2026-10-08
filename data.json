@@ -106,7 +106,7 @@
   "table": [
    {
     "pos": 1,
-    "team": "Quick Boys QUI",
+    "team": "Quick Boys",
     "gs": 8,
     "dv": 22,
     "dt": 6,
@@ -115,7 +115,7 @@
    },
    {
     "pos": 2,
-    "team": "Kozakken Boys KOZ",
+    "team": "Kozakken Boys",
     "gs": 8,
     "dv": 23,
     "dt": 12,
@@ -124,7 +124,7 @@
    },
    {
     "pos": 3,
-    "team": "De Treffers TRE",
+    "team": "De Treffers",
     "gs": 8,
     "dv": 20,
     "dt": 9,
@@ -133,7 +133,7 @@
    },
    {
     "pos": 4,
-    "team": "HHC HHC",
+    "team": "HHC",
     "gs": 8,
     "dv": 15,
     "dt": 12,
@@ -142,7 +142,7 @@
    },
    {
     "pos": 5,
-    "team": "Barendrecht BAR",
+    "team": "Barendrecht",
     "gs": 8,
     "dv": 15,
     "dt": 12,
@@ -151,7 +151,7 @@
    },
    {
     "pos": 6,
-    "team": "IJsselmeervogels IJS",
+    "team": "IJsselmeervogels",
     "gs": 7,
     "dv": 10,
     "dt": 5,
@@ -160,7 +160,7 @@
    },
    {
     "pos": 7,
-    "team": "Spakenburg SPA",
+    "team": "Spakenburg",
     "gs": 8,
     "dv": 11,
     "dt": 12,
@@ -169,7 +169,7 @@
    },
    {
     "pos": 8,
-    "team": "Jong Sparta SP2",
+    "team": "Jong Sparta",
     "gs": 8,
     "dv": 23,
     "dt": 15,
@@ -178,7 +178,7 @@
    },
    {
     "pos": 9,
-    "team": "Katwijk KAT",
+    "team": "Katwijk",
     "gs": 8,
     "dv": 11,
     "dt": 13,
@@ -187,7 +187,7 @@
    },
    {
     "pos": 10,
-    "team": "AFC AFC",
+    "team": "AFC",
     "gs": 8,
     "dv": 12,
     "dt": 14,
@@ -196,7 +196,7 @@
    },
    {
     "pos": 11,
-    "team": "Rijnsburgse Boys RIJ",
+    "team": "Rijnsburgse Boys",
     "gs": 8,
     "dv": 15,
     "dt": 22,
@@ -205,7 +205,7 @@
    },
    {
     "pos": 12,
-    "team": "GVVV GVV",
+    "team": "GVVV",
     "gs": 7,
     "dv": 14,
     "dt": 17,
@@ -214,7 +214,7 @@
    },
    {
     "pos": 13,
-    "team": "Hoek HSV",
+    "team": "Hoek",
     "gs": 8,
     "dv": 11,
     "dt": 13,
@@ -223,7 +223,7 @@
    },
    {
     "pos": 14,
-    "team": "Volendam (amateurs) RKA",
+    "team": "Volendam (amateurs)",
     "gs": 8,
     "dv": 10,
     "dt": 17,
@@ -232,7 +232,7 @@
    },
    {
     "pos": 15,
-    "team": "Jong Almere City AL2",
+    "team": "Jong Almere City",
     "gs": 8,
     "dv": 15,
     "dt": 17,
@@ -241,7 +241,7 @@
    },
    {
     "pos": 16,
-    "team": "HFC HFC",
+    "team": "HFC",
     "gs": 8,
     "dv": 11,
     "dt": 16,
@@ -250,7 +250,7 @@
    },
    {
     "pos": 17,
-    "team": "Kloetinge KLO",
+    "team": "Kloetinge",
     "gs": 8,
     "dv": 11,
     "dt": 21,
@@ -259,7 +259,7 @@
    },
    {
     "pos": 18,
-    "team": "Rohda Raalte ROH",
+    "team": "Rohda Raalte",
     "gs": 8,
     "dv": 7,
     "dt": 23,
@@ -269,12 +269,54 @@
   ],
   "matches": {
    "Jong Sparta": {
-    "last": null,
-    "next": []
+    "last": {
+     "date": "2026-10-03",
+     "time": "",
+     "home": "Barendrecht",
+     "away": "Jong Sparta",
+     "score": "3-2"
+    },
+    "next": [
+     {
+      "date": "2026-10-10",
+      "time": "15:00",
+      "home": "Jong Sparta",
+      "away": "Jong Almere City",
+      "score": null
+     },
+     {
+      "date": "2026-10-17",
+      "time": "14:30",
+      "home": "Volendam (amateurs)",
+      "away": "Jong Sparta",
+      "score": null
+     }
+    ]
    },
    "Jong Almere City": {
-    "last": null,
-    "next": []
+    "last": {
+     "date": "2026-10-03",
+     "time": "",
+     "home": "Volendam (amateurs)",
+     "away": "Jong Almere City",
+     "score": "1-4"
+    },
+    "next": [
+     {
+      "date": "2026-10-10",
+      "time": "15:00",
+      "home": "Jong Sparta",
+      "away": "Jong Almere City",
+      "score": null
+     },
+     {
+      "date": "2026-10-17",
+      "time": "15:00",
+      "home": "Jong Almere City",
+      "away": "De Treffers",
+      "score": null
+     }
+    ]
    }
   }
  }
