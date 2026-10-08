@@ -308,19 +308,46 @@ def table_html(rows, highlight, cls, strip=""):
     return f"<table>{head}<tbody>{body}</tbody></table>"
 
 
-JONG_LOWER_THAN = 9  # een Jong-team moet lager staan dan deze plek (dus 10e of lager)
-TEXT_UP = "himmelhoch jauchzend"
-TEXT_DOWN = "zum Tode betrübt"
+def punten(n):
+    return f"{n} punt" if n == 1 else f"{n} punten"
 
 
-def mood_html(data):
-    """Feyenoord O21 eerste en minstens een Jong-team lager dan plek 9: blij. Anders: bedroefd."""
-    first = any(r["team"] == "Feyenoord O21" and r["pos"] == 1 for r in data["o21"]["table"])
-    jong_low = any(r["team"] in SECTIONS["td"]["highlight"] and r["pos"] > JONG_LOWER_THAN
-                   for r in data["td"]["table"])
-    if first and jong_low:
-        return f'<div class="banner up">{esc(TEXT_UP)}</div>'
-    return f'<div class="banner down">{esc(TEXT_DOWN)}</div>'
+def promotie_html(data):
+    """Uitlegblok over promotie, met de actuele rangschikking van Feyenoord O21 en de Jong-teams."""
+    o21 = data["o21"]["table"]
+    td = data["td"]["table"]
+    feyenoord = next((r for r in o21 if r["team"] == "Feyenoord O21"), None)
+    pos_fey = f'op de <b>{feyenoord["pos"]}e</b> plek' if feyenoord else "<b>onbekend</b>"
+
+    jong = [r for r in td if r["team"] in SECTIONS["td"]["highlight"]]
+    if jong:
+        low = max(jong, key=lambda r: r["pos"])
+        nr9 = next((r for r in td if r["pos"] == 9), None)
+        nr10 = next((r for r in td if r["pos"] == 10), None)
+        if low["pos"] > 9 and nr9:
+            gap = nr9["pt"] - low["pt"]
+            afstand = ("op gelijke stand met de nummer 9 van het linkerrijtje" if gap == 0
+                       else f'op <b>{punten(gap)}</b> van het linkerrijtje')
+        elif nr10:
+            afstand = f'nog in het linkerrijtje, <b>{punten(low["pt"] - nr10["pt"])}</b> boven het rechterrijtje'
+        else:
+            afstand = "in het linkerrijtje"
+        tweede = (f'Op dit moment is <b>{esc(low["team"])}</b> het laagst geklasseerde Jong-team in de '
+                  f'Tweede Divisie, op de <b>{low["pos"]}e</b> plek, {afstand}.')
+    else:
+        tweede = "De positie van de Jong-teams is op dit moment niet bekend."
+
+    return ('<div class="card info">'
+            "<p>Om te kunnen promoveren moet er aan twee voorwaarden worden voldaan.</p>"
+            "<p>Ten eerste moet Feyenoord algeheel kampioen worden van de O21-competitie. Deze competitie is "
+            "gesplitst in een najaarscompetitie en een voorjaarscompetitie. In de najaarscompetitie staat "
+            f"Feyenoord {pos_fey}. Als een club beide competities wint is zij automatisch algeheel kampioen. "
+            "Anders volgt een beslissingswedstrijd.</p>"
+            "<p>Ten tweede moet \u00e9\u00e9n van de twee Jong-ploegen in de Tweede Divisie minimaal in het "
+            f"rechterrijtje eindigen. {tweede}</p>"
+            "<p>Als dat zo is, dan volgt een play off over twee wedstrijden. Wat ook nog kan is dat een Jong "
+            "team 17e of 18e eindigt. Indien dat het geval is hoeft de algeheel kampioen van de O21-competitie "
+            "geen beslissingswedstrijd te spelen.</p></div>")
 
 
 def build_html(data, warnings):
@@ -333,7 +360,8 @@ def build_html(data, warnings):
     now = dt.datetime.now(dt.timezone.utc).astimezone().strftime("%d-%m-%Y %H:%M")
     return (t.replace("{{UPDATED}}", esc(now))
             .replace("{{WARNINGS}}", warn)
-            .replace("{{MOOD}}", mood_html(data))
+            .replace("{{MOOD}}", "")
+            .replace("{{PROMOTIE}}", promotie_html(data))
             .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me", " O21"))
             .replace("{{O21_MATCHES}}", match_block(o["matches"]["Feyenoord O21"], "Feyenoord O21"))
             .replace("{{TD_TABLE}}", table_html(d["table"], SECTIONS["td"]["highlight"], "jong"))
