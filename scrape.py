@@ -49,6 +49,7 @@ SECTIONS = {
 # Alleen voor de tabellen: lange namen korter weergeven (links de naam op de site, rechts de korte naam)
 SHORT_NAMES = {
     "FC Twente / Heracles O21": "Twente/Heracles O21",
+    "FC Twente / Heracles Academie": "Twente/Heracles",
     "Volendam (amateurs)": "Volendam (am.)",
 }
 
@@ -136,6 +137,11 @@ def parse_standings(soup):
             raw.append((to_int(cells[0]), cells[team_idx], nums, goals, cells))
         if len(raw) < 4:
             continue
+        # Sommige sites zetten een afkorting achter de clubnaam ("Jong Sparta SP2"): die halen we weg
+        codes = [t.split()[-1] for _, t, _, _, _ in raw if len(t.split()) > 1]
+        if (len(codes) >= 0.8 * len(raw) and len(set(codes)) > 2
+                and all(re.fullmatch(r"[A-Z0-9]{2,4}", c) for c in codes)):
+            raw = [(p, t.rsplit(" ", 1)[0] if len(t.split()) > 1 else t, n, g, c) for p, t, n, g, c in raw]
         votes = Counter()
         for _, _, nums, goals, _ in raw:
             for lay in set(layouts(nums, goals is None)):
