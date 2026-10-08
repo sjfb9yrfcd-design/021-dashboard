@@ -47,9 +47,10 @@ td.pt{font-weight:700}
 .lab{font-size:13px;color:var(--mute);margin:12px 0 2px;font-weight:600}
 .lab:first-of-type{margin-top:0}
 .warn{background:var(--hi);border:2px solid var(--red);border-radius:8px;padding:10px 12px;margin:16px 0 0;font-size:14px}
-.banner{margin:16px 0 0;padding:14px 12px;border-radius:10px;text-align:center;font-size:22px;font-weight:800;letter-spacing:.01em}
-.banner.up{background:var(--red);color:#fff}
-.banner.down{background:var(--card);color:var(--ink);border:2px solid var(--ink)}
+.info{margin-top:16px}
+.info p{margin:0 0 10px}
+.info p:last-child{margin:0}
+.info b{color:var(--red)}
 footer{margin-top:28px;color:var(--mute);font-size:13px}
 @media(max-width:480px){main{padding-left:10px;padding-right:10px}.card{padding:10px}th,td{padding:6px 4px;font-size:13px}th:first-child,td:first-child{width:26px}}
 </style>
@@ -59,7 +60,7 @@ footer{margin-top:28px;color:var(--mute);font-size:13px}
 <p class="sub">Laatst bijgewerkt: {{UPDATED}}</p></div></header>
 <main>
 {{WARNINGS}}
-{{MOOD}}
+{{PROMOTIE}}
 <h2>Feyenoord O21: najaarscompetitie</h2>
 <div class="grid two">
  <div class="card scroll">{{O21_TABLE}}</div>
