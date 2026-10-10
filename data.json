@@ -77,25 +77,25 @@
   "matches": {
    "Feyenoord O21": {
     "last": {
-     "date": "2026-09-19",
-     "time": "12:15",
-     "home": "Feyenoord O21",
-     "away": "PEC Zwolle O21",
-     "score": "4-0"
+     "date": "2026-10-10",
+     "time": "14:30",
+     "home": "FC Groningen O21",
+     "away": "Feyenoord O21",
+     "score": "1-4"
     },
     "next": [
-     {
-      "date": "2026-10-10",
-      "time": "14:30",
-      "home": "FC Groningen O21",
-      "away": "Feyenoord O21",
-      "score": null
-     },
      {
       "date": "2026-10-17",
       "time": "12:15",
       "home": "Feyenoord O21",
       "away": "De Graafschap O21",
+      "score": null
+     },
+     {
+      "date": "2026-10-24",
+      "time": "12:15",
+      "home": "Feyenoord O21",
+      "away": "SC Cambuur O21",
       "score": null
      }
     ]
