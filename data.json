@@ -124,21 +124,21 @@
    },
    {
     "pos": 3,
+    "team": "De Treffers",
+    "gs": 9,
+    "dv": 24,
+    "dt": 9,
+    "ds": 15,
+    "pt": 18
+   },
+   {
+    "pos": 4,
     "team": "IJsselmeervogels",
     "gs": 8,
     "dv": 12,
     "dt": 5,
     "ds": 7,
     "pt": 16
-   },
-   {
-    "pos": 4,
-    "team": "De Treffers",
-    "gs": 8,
-    "dv": 20,
-    "dt": 9,
-    "ds": 11,
-    "pt": 15
    },
    {
     "pos": 5,
@@ -152,10 +152,10 @@
    {
     "pos": 6,
     "team": "Barendrecht",
-    "gs": 8,
+    "gs": 9,
     "dv": 15,
-    "dt": 12,
-    "ds": 3,
+    "dt": 16,
+    "ds": -1,
     "pt": 14
    },
    {
