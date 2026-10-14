@@ -40,11 +40,11 @@
    {
     "pos": 5,
     "team": "FC Groningen O21",
-    "gs": 5,
+    "gs": 6,
     "dv": 9,
     "dt": 10,
     "ds": -1,
-    "pt": 7
+    "pt": 8
    },
    {
     "pos": 6,
@@ -67,11 +67,11 @@
    {
     "pos": 8,
     "team": "Willem II O21",
-    "gs": 5,
+    "gs": 6,
     "dv": 6,
     "dt": 12,
     "ds": -6,
-    "pt": 1
+    "pt": 2
    }
   ],
   "matches": {
@@ -134,14 +134,23 @@
    {
     "pos": 4,
     "team": "IJsselmeervogels",
-    "gs": 8,
+    "gs": 9,
     "dv": 12,
-    "dt": 5,
-    "ds": 7,
+    "dt": 8,
+    "ds": 4,
     "pt": 16
    },
    {
     "pos": 5,
+    "team": "GVVV",
+    "gs": 9,
+    "dv": 21,
+    "dt": 18,
+    "ds": 3,
+    "pt": 15
+   },
+   {
+    "pos": 6,
     "team": "HHC",
     "gs": 9,
     "dv": 18,
@@ -150,7 +159,7 @@
     "pt": 15
    },
    {
-    "pos": 6,
+    "pos": 7,
     "team": "Barendrecht",
     "gs": 9,
     "dv": 15,
@@ -159,7 +168,7 @@
     "pt": 14
    },
    {
-    "pos": 7,
+    "pos": 8,
     "team": "AFC",
     "gs": 9,
     "dv": 14,
@@ -168,22 +177,13 @@
     "pt": 13
    },
    {
-    "pos": 8,
+    "pos": 9,
     "team": "Spakenburg",
     "gs": 9,
     "dv": 11,
     "dt": 14,
     "ds": -3,
     "pt": 13
-   },
-   {
-    "pos": 9,
-    "team": "GVVV",
-    "gs": 8,
-    "dv": 18,
-    "dt": 18,
-    "ds": 0,
-    "pt": 12
    },
    {
     "pos": 10,
