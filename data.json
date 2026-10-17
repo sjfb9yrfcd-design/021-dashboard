@@ -270,25 +270,25 @@
   "matches": {
    "Jong Sparta": {
     "last": {
-     "date": "2026-10-10",
+     "date": "2026-10-17",
      "time": "",
-     "home": "Jong Sparta",
-     "away": "Jong Almere City",
-     "score": "1-4"
+     "home": "Volendam (amateurs)",
+     "away": "Jong Sparta",
+     "score": "1-1"
     },
     "next": [
-     {
-      "date": "2026-10-17",
-      "time": "14:30",
-      "home": "Volendam (amateurs)",
-      "away": "Jong Sparta",
-      "score": null
-     },
      {
       "date": "2026-10-24",
       "time": "18:00",
       "home": "De Treffers",
       "away": "Jong Sparta",
+      "score": null
+     },
+     {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "home": "Jong Sparta",
+      "away": "AFC",
       "score": null
      }
     ]
