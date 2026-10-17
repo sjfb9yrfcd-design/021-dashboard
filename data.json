@@ -77,25 +77,25 @@
   "matches": {
    "Feyenoord O21": {
     "last": {
-     "date": "2026-10-10",
-     "time": "14:30",
-     "home": "FC Groningen O21",
-     "away": "Feyenoord O21",
-     "score": "1-4"
+     "date": "2026-10-17",
+     "time": "12:15",
+     "home": "Feyenoord O21",
+     "away": "De Graafschap O21",
+     "score": "4-0"
     },
     "next": [
-     {
-      "date": "2026-10-17",
-      "time": "12:15",
-      "home": "Feyenoord O21",
-      "away": "De Graafschap O21",
-      "score": null
-     },
      {
       "date": "2026-10-24",
       "time": "12:15",
       "home": "Feyenoord O21",
       "away": "SC Cambuur O21",
+      "score": null
+     },
+     {
+      "date": "2026-10-27",
+      "time": "13:00",
+      "home": "De Graafschap O21",
+      "away": "Feyenoord O21",
       "score": null
      }
     ]
@@ -295,11 +295,11 @@
    },
    "Jong Almere City": {
     "last": {
-     "date": "2026-10-10",
+     "date": "2026-10-17",
      "time": "",
-     "home": "Jong Sparta",
-     "away": "Jong Almere City",
-     "score": "1-4"
+     "home": "Jong Almere City",
+     "away": "De Treffers",
+     "score": "2-3"
     },
     "next": [
      {
