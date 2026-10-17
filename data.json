@@ -303,17 +303,17 @@
     },
     "next": [
      {
-      "date": "2026-10-17",
-      "time": "",
-      "home": "Jong Almere City",
-      "away": "De Treffers",
-      "score": null
-     },
-     {
       "date": "2026-10-24",
       "time": "15:15",
       "home": "AFC",
       "away": "Jong Almere City",
+      "score": null
+     },
+     {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "home": "Jong Almere City",
+      "away": "Kozakken Boys",
       "score": null
      }
     ]
