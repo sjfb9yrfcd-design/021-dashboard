@@ -107,163 +107,163 @@
    {
     "pos": 1,
     "team": "Quick Boys",
-    "gs": 9,
-    "dv": 28,
-    "dt": 6,
+    "gs": 10,
+    "dv": 29,
+    "dt": 7,
     "ds": 22,
-    "pt": 24
+    "pt": 25
    },
    {
     "pos": 2,
-    "team": "Kozakken Boys",
-    "gs": 9,
-    "dv": 25,
-    "dt": 12,
-    "ds": 13,
-    "pt": 20
+    "team": "De Treffers",
+    "gs": 10,
+    "dv": 27,
+    "dt": 11,
+    "ds": 16,
+    "pt": 21
    },
    {
     "pos": 3,
-    "team": "De Treffers",
-    "gs": 9,
-    "dv": 24,
-    "dt": 9,
-    "ds": 15,
-    "pt": 18
+    "team": "Kozakken Boys",
+    "gs": 10,
+    "dv": 25,
+    "dt": 12,
+    "ds": 13,
+    "pt": 21
    },
    {
     "pos": 4,
     "team": "IJsselmeervogels",
-    "gs": 9,
-    "dv": 12,
-    "dt": 8,
-    "ds": 4,
-    "pt": 16
+    "gs": 10,
+    "dv": 14,
+    "dt": 9,
+    "ds": 5,
+    "pt": 19
    },
    {
     "pos": 5,
-    "team": "GVVV",
-    "gs": 9,
-    "dv": 21,
-    "dt": 18,
-    "ds": 3,
-    "pt": 15
+    "team": "HHC",
+    "gs": 10,
+    "dv": 20,
+    "dt": 16,
+    "ds": 4,
+    "pt": 18
    },
    {
     "pos": 6,
-    "team": "HHC",
-    "gs": 9,
-    "dv": 18,
-    "dt": 15,
-    "ds": 3,
-    "pt": 15
+    "team": "Barendrecht",
+    "gs": 10,
+    "dv": 19,
+    "dt": 17,
+    "ds": 2,
+    "pt": 17
    },
    {
     "pos": 7,
-    "team": "Barendrecht",
-    "gs": 9,
-    "dv": 15,
-    "dt": 16,
-    "ds": -1,
-    "pt": 14
+    "team": "GVVV",
+    "gs": 10,
+    "dv": 22,
+    "dt": 20,
+    "ds": 2,
+    "pt": 15
    },
    {
     "pos": 8,
-    "team": "AFC",
-    "gs": 9,
-    "dv": 14,
-    "dt": 14,
+    "team": "Volendam (amateurs)",
+    "gs": 10,
+    "dv": 20,
+    "dt": 20,
     "ds": 0,
-    "pt": 13
+    "pt": 15
    },
    {
     "pos": 9,
     "team": "Spakenburg",
-    "gs": 9,
-    "dv": 11,
-    "dt": 14,
+    "gs": 10,
+    "dv": 12,
+    "dt": 15,
+    "ds": -3,
+    "pt": 14
+   },
+   {
+    "pos": 10,
+    "team": "AFC",
+    "gs": 10,
+    "dv": 15,
+    "dt": 18,
     "ds": -3,
     "pt": 13
    },
    {
-    "pos": 10,
-    "team": "Jong Sparta",
-    "gs": 9,
-    "dv": 24,
-    "dt": 19,
-    "ds": 5,
-    "pt": 12
-   },
-   {
     "pos": 11,
-    "team": "Volendam (amateurs)",
-    "gs": 9,
-    "dv": 18,
-    "dt": 19,
-    "ds": -1,
-    "pt": 12
+    "team": "Rijnsburgse Boys",
+    "gs": 10,
+    "dv": 17,
+    "dt": 26,
+    "ds": -9,
+    "pt": 13
    },
    {
     "pos": 12,
-    "team": "Katwijk",
-    "gs": 9,
-    "dv": 11,
-    "dt": 19,
-    "ds": -8,
-    "pt": 11
+    "team": "Jong Sparta",
+    "gs": 10,
+    "dv": 25,
+    "dt": 21,
+    "ds": 4,
+    "pt": 12
    },
    {
     "pos": 13,
-    "team": "Jong Almere City",
-    "gs": 9,
-    "dv": 19,
-    "dt": 18,
-    "ds": 1,
-    "pt": 10
+    "team": "Katwijk",
+    "gs": 10,
+    "dv": 12,
+    "dt": 21,
+    "ds": -9,
+    "pt": 11
    },
    {
     "pos": 14,
-    "team": "Rijnsburgse Boys",
-    "gs": 9,
-    "dv": 16,
-    "dt": 26,
-    "ds": -10,
+    "team": "Jong Almere City",
+    "gs": 10,
+    "dv": 21,
+    "dt": 21,
+    "ds": 0,
     "pt": 10
    },
    {
     "pos": 15,
     "team": "Hoek",
-    "gs": 9,
+    "gs": 10,
     "dv": 11,
     "dt": 15,
     "ds": -4,
-    "pt": 9
+    "pt": 10
    },
    {
     "pos": 16,
-    "team": "Kloetinge",
-    "gs": 9,
-    "dv": 14,
-    "dt": 24,
-    "ds": -10,
-    "pt": 7
+    "team": "HFC",
+    "gs": 10,
+    "dv": 13,
+    "dt": 19,
+    "ds": -6,
+    "pt": 9
    },
    {
     "pos": 17,
-    "team": "HFC",
-    "gs": 9,
-    "dv": 11,
-    "dt": 18,
-    "ds": -7,
-    "pt": 6
+    "team": "Kloetinge",
+    "gs": 10,
+    "dv": 15,
+    "dt": 26,
+    "ds": -11,
+    "pt": 7
    },
    {
     "pos": 18,
     "team": "Rohda Raalte",
-    "gs": 9,
+    "gs": 10,
     "dv": 9,
-    "dt": 31,
-    "ds": -22,
+    "dt": 32,
+    "ds": -23,
     "pt": 1
    }
   ],
@@ -274,7 +274,7 @@
      "time": "",
      "home": "Volendam (amateurs)",
      "away": "Jong Sparta",
-     "score": "1-1"
+     "score": "2-1"
     },
     "next": [
      {
@@ -304,7 +304,7 @@
     "next": [
      {
       "date": "2026-10-17",
-      "time": "15:00",
+      "time": "",
       "home": "Jong Almere City",
       "away": "De Treffers",
       "score": null
