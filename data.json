@@ -4,11 +4,11 @@
    {
     "pos": 1,
     "team": "Feyenoord O21",
-    "gs": 5,
-    "dv": 18,
+    "gs": 6,
+    "dv": 22,
     "dt": 4,
-    "ds": 14,
-    "pt": 15
+    "ds": 18,
+    "pt": 18
    },
    {
     "pos": 2,
@@ -21,20 +21,20 @@
    },
    {
     "pos": 3,
-    "team": "De Graafschap O21",
-    "gs": 6,
-    "dv": 7,
-    "dt": 6,
-    "ds": 1,
-    "pt": 9
-   },
-   {
-    "pos": 4,
     "team": "PEC Zwolle O21",
     "gs": 6,
     "dv": 7,
     "dt": 8,
     "ds": -1,
+    "pt": 9
+   },
+   {
+    "pos": 4,
+    "team": "De Graafschap O21",
+    "gs": 7,
+    "dv": 7,
+    "dt": 10,
+    "ds": -3,
     "pt": 9
    },
    {
@@ -77,11 +77,11 @@
   "matches": {
    "Feyenoord O21": {
     "last": {
-     "date": "2026-10-17",
-     "time": "12:15",
-     "home": "Feyenoord O21",
-     "away": "De Graafschap O21",
-     "score": "4-0"
+     "date": "2026-10-10",
+     "time": "14:30",
+     "home": "FC Groningen O21",
+     "away": "Feyenoord O21",
+     "score": "1-4"
     },
     "next": [
      {
