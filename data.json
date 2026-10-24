@@ -279,7 +279,7 @@
     "next": [
      {
       "date": "2026-10-24",
-      "time": "18:00",
+      "time": "",
       "home": "De Treffers",
       "away": "Jong Sparta",
       "score": null
@@ -295,11 +295,11 @@
    },
    "Jong Almere City": {
     "last": {
-     "date": "2026-10-17",
+     "date": "2026-10-24",
      "time": "",
-     "home": "Jong Almere City",
-     "away": "De Treffers",
-     "score": "2-3"
+     "home": "AFC",
+     "away": "Jong Almere City",
+     "score": "0-1"
     },
     "next": [
      {
