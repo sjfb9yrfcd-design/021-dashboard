@@ -107,14 +107,23 @@
    {
     "pos": 1,
     "team": "Quick Boys",
-    "gs": 10,
-    "dv": 29,
-    "dt": 7,
-    "ds": 22,
-    "pt": 25
+    "gs": 11,
+    "dv": 32,
+    "dt": 8,
+    "ds": 24,
+    "pt": 28
    },
    {
     "pos": 2,
+    "team": "IJsselmeervogels",
+    "gs": 11,
+    "dv": 16,
+    "dt": 10,
+    "ds": 6,
+    "pt": 22
+   },
+   {
+    "pos": 3,
     "team": "De Treffers",
     "gs": 10,
     "dv": 27,
@@ -123,88 +132,97 @@
     "pt": 21
    },
    {
-    "pos": 3,
-    "team": "Kozakken Boys",
-    "gs": 10,
-    "dv": 25,
-    "dt": 12,
-    "ds": 13,
-    "pt": 21
-   },
-   {
     "pos": 4,
-    "team": "IJsselmeervogels",
-    "gs": 10,
-    "dv": 14,
-    "dt": 9,
-    "ds": 5,
-    "pt": 19
+    "team": "Kozakken Boys",
+    "gs": 11,
+    "dv": 25,
+    "dt": 13,
+    "ds": 12,
+    "pt": 21
    },
    {
     "pos": 5,
     "team": "HHC",
-    "gs": 10,
-    "dv": 20,
+    "gs": 11,
+    "dv": 21,
     "dt": 16,
-    "ds": 4,
-    "pt": 18
+    "ds": 5,
+    "pt": 21
    },
    {
     "pos": 6,
     "team": "Barendrecht",
-    "gs": 10,
-    "dv": 19,
+    "gs": 11,
+    "dv": 20,
     "dt": 17,
-    "ds": 2,
-    "pt": 17
+    "ds": 3,
+    "pt": 20
    },
    {
     "pos": 7,
     "team": "GVVV",
-    "gs": 10,
-    "dv": 22,
+    "gs": 11,
+    "dv": 24,
     "dt": 20,
-    "ds": 2,
-    "pt": 15
+    "ds": 4,
+    "pt": 18
    },
    {
     "pos": 8,
     "team": "Volendam (amateurs)",
-    "gs": 10,
-    "dv": 20,
+    "gs": 11,
+    "dv": 21,
     "dt": 20,
-    "ds": 0,
-    "pt": 15
+    "ds": 1,
+    "pt": 18
    },
    {
     "pos": 9,
     "team": "Spakenburg",
-    "gs": 10,
-    "dv": 12,
-    "dt": 15,
-    "ds": -3,
+    "gs": 11,
+    "dv": 13,
+    "dt": 17,
+    "ds": -4,
     "pt": 14
    },
    {
     "pos": 10,
-    "team": "AFC",
-    "gs": 10,
+    "team": "Katwijk",
+    "gs": 11,
     "dv": 15,
-    "dt": 18,
-    "ds": -3,
-    "pt": 13
+    "dt": 22,
+    "ds": -7,
+    "pt": 14
    },
    {
     "pos": 11,
-    "team": "Rijnsburgse Boys",
-    "gs": 10,
-    "dv": 17,
-    "dt": 26,
-    "ds": -9,
+    "team": "Jong Almere City",
+    "gs": 11,
+    "dv": 22,
+    "dt": 21,
+    "ds": 1,
     "pt": 13
    },
    {
     "pos": 12,
+    "team": "AFC",
+    "gs": 11,
+    "dv": 15,
+    "dt": 19,
+    "ds": -4,
+    "pt": 13
+   },
+   {
+    "pos": 13,
+    "team": "Rijnsburgse Boys",
+    "gs": 11,
+    "dv": 17,
+    "dt": 27,
+    "ds": -10,
+    "pt": 13
+   },
+   {
+    "pos": 14,
     "team": "Jong Sparta",
     "gs": 10,
     "dv": 25,
@@ -213,57 +231,39 @@
     "pt": 12
    },
    {
-    "pos": 13,
-    "team": "Katwijk",
-    "gs": 10,
-    "dv": 12,
-    "dt": 21,
-    "ds": -9,
-    "pt": 11
-   },
-   {
-    "pos": 14,
-    "team": "Jong Almere City",
-    "gs": 10,
-    "dv": 21,
-    "dt": 21,
-    "ds": 0,
-    "pt": 10
-   },
-   {
     "pos": 15,
     "team": "Hoek",
-    "gs": 10,
-    "dv": 11,
-    "dt": 15,
-    "ds": -4,
+    "gs": 11,
+    "dv": 12,
+    "dt": 18,
+    "ds": -6,
     "pt": 10
    },
    {
     "pos": 16,
     "team": "HFC",
-    "gs": 10,
+    "gs": 11,
     "dv": 13,
-    "dt": 19,
-    "ds": -6,
+    "dt": 21,
+    "ds": -8,
     "pt": 9
    },
    {
     "pos": 17,
     "team": "Kloetinge",
-    "gs": 10,
-    "dv": 15,
-    "dt": 26,
-    "ds": -11,
+    "gs": 11,
+    "dv": 16,
+    "dt": 29,
+    "ds": -13,
     "pt": 7
    },
    {
     "pos": 18,
     "team": "Rohda Raalte",
-    "gs": 10,
+    "gs": 11,
     "dv": 9,
-    "dt": 32,
-    "ds": -23,
+    "dt": 33,
+    "ds": -24,
     "pt": 1
    }
   ],
@@ -303,17 +303,17 @@
     },
     "next": [
      {
-      "date": "2026-10-24",
-      "time": "15:15",
-      "home": "AFC",
-      "away": "Jong Almere City",
-      "score": null
-     },
-     {
       "date": "2026-11-07",
       "time": "15:00",
       "home": "Jong Almere City",
       "away": "Kozakken Boys",
+      "score": null
+     },
+     {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "home": "Quick Boys",
+      "away": "Jong Almere City",
       "score": null
      }
     ]
