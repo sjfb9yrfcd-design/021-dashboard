@@ -115,21 +115,21 @@
    },
    {
     "pos": 2,
+    "team": "De Treffers",
+    "gs": 11,
+    "dv": 30,
+    "dt": 14,
+    "ds": 16,
+    "pt": 22
+   },
+   {
+    "pos": 3,
     "team": "IJsselmeervogels",
     "gs": 11,
     "dv": 16,
     "dt": 10,
     "ds": 6,
     "pt": 22
-   },
-   {
-    "pos": 3,
-    "team": "De Treffers",
-    "gs": 10,
-    "dv": 27,
-    "dt": 11,
-    "ds": 16,
-    "pt": 21
    },
    {
     "pos": 4,
@@ -196,6 +196,15 @@
    },
    {
     "pos": 11,
+    "team": "Jong Sparta",
+    "gs": 11,
+    "dv": 28,
+    "dt": 24,
+    "ds": 4,
+    "pt": 13
+   },
+   {
+    "pos": 12,
     "team": "Jong Almere City",
     "gs": 11,
     "dv": 22,
@@ -204,7 +213,7 @@
     "pt": 13
    },
    {
-    "pos": 12,
+    "pos": 13,
     "team": "AFC",
     "gs": 11,
     "dv": 15,
@@ -213,22 +222,13 @@
     "pt": 13
    },
    {
-    "pos": 13,
+    "pos": 14,
     "team": "Rijnsburgse Boys",
     "gs": 11,
     "dv": 17,
     "dt": 27,
     "ds": -10,
     "pt": 13
-   },
-   {
-    "pos": 14,
-    "team": "Jong Sparta",
-    "gs": 10,
-    "dv": 25,
-    "dt": 21,
-    "ds": 4,
-    "pt": 12
    },
    {
     "pos": 15,
@@ -278,17 +278,17 @@
     },
     "next": [
      {
-      "date": "2026-10-24",
-      "time": "",
-      "home": "De Treffers",
-      "away": "Jong Sparta",
-      "score": null
-     },
-     {
       "date": "2026-11-07",
       "time": "15:00",
       "home": "Jong Sparta",
       "away": "AFC",
+      "score": null
+     },
+     {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "home": "Kozakken Boys",
+      "away": "Jong Sparta",
       "score": null
      }
     ]
