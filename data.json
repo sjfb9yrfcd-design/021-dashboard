@@ -12,6 +12,24 @@
    },
    {
     "pos": 2,
+    "team": "PEC Zwolle O21",
+    "gs": 7,
+    "dv": 9,
+    "dt": 9,
+    "ds": 0,
+    "pt": 12
+   },
+   {
+    "pos": 3,
+    "team": "FC Groningen O21",
+    "gs": 7,
+    "dv": 13,
+    "dt": 12,
+    "ds": 1,
+    "pt": 11
+   },
+   {
+    "pos": 4,
     "team": "SC Cambuur O21",
     "gs": 5,
     "dv": 13,
@@ -20,57 +38,39 @@
     "pt": 10
    },
    {
-    "pos": 3,
-    "team": "PEC Zwolle O21",
-    "gs": 6,
-    "dv": 7,
-    "dt": 8,
-    "ds": -1,
-    "pt": 9
-   },
-   {
-    "pos": 4,
-    "team": "De Graafschap O21",
-    "gs": 7,
-    "dv": 7,
-    "dt": 10,
-    "ds": -3,
-    "pt": 9
-   },
-   {
     "pos": 5,
-    "team": "FC Groningen O21",
-    "gs": 6,
-    "dv": 9,
-    "dt": 10,
-    "ds": -1,
-    "pt": 8
+    "team": "De Graafschap O21",
+    "gs": 8,
+    "dv": 8,
+    "dt": 11,
+    "ds": -3,
+    "pt": 10
    },
    {
     "pos": 6,
     "team": "FC Twente / Heracles Academie O21",
-    "gs": 6,
-    "dv": 7,
-    "dt": 13,
+    "gs": 7,
+    "dv": 8,
+    "dt": 14,
     "ds": -6,
-    "pt": 7
+    "pt": 8
    },
    {
     "pos": 7,
     "team": "Go Ahead Eagles O21",
-    "gs": 6,
-    "dv": 5,
-    "dt": 14,
-    "ds": -9,
+    "gs": 7,
+    "dv": 6,
+    "dt": 16,
+    "ds": -10,
     "pt": 5
    },
    {
     "pos": 8,
     "team": "Willem II O21",
-    "gs": 6,
-    "dv": 6,
-    "dt": 12,
-    "ds": -6,
+    "gs": 7,
+    "dv": 8,
+    "dt": 16,
+    "ds": -8,
     "pt": 2
    }
   ],
@@ -85,17 +85,17 @@
     },
     "next": [
      {
-      "date": "2026-10-24",
-      "time": "12:15",
-      "home": "Feyenoord O21",
-      "away": "SC Cambuur O21",
-      "score": null
-     },
-     {
       "date": "2026-10-31",
       "time": "14:45",
       "home": "PEC Zwolle O21",
       "away": "Feyenoord O21",
+      "score": null
+     },
+     {
+      "date": "2026-11-07",
+      "time": "12:15",
+      "home": "Feyenoord O21",
+      "away": "FC Groningen O21",
       "score": null
      }
     ]
