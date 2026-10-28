@@ -13,11 +13,11 @@
    {
     "pos": 2,
     "team": "PEC Zwolle O21",
-    "gs": 7,
-    "dv": 9,
+    "gs": 8,
+    "dv": 10,
     "dt": 9,
-    "ds": 0,
-    "pt": 12
+    "ds": 1,
+    "pt": 15
    },
    {
     "pos": 3,
@@ -49,10 +49,10 @@
    {
     "pos": 6,
     "team": "FC Twente / Heracles Academie O21",
-    "gs": 7,
+    "gs": 8,
     "dv": 8,
-    "dt": 14,
-    "ds": -6,
+    "dt": 15,
+    "ds": -7,
     "pt": 8
    },
    {
