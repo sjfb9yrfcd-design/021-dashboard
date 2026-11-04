@@ -22,29 +22,29 @@
    {
     "pos": 3,
     "team": "FC Groningen O21",
-    "gs": 8,
-    "dv": 16,
-    "dt": 13,
-    "ds": 3,
+    "gs": 9,
+    "dv": 18,
+    "dt": 19,
+    "ds": -1,
     "pt": 14
    },
    {
     "pos": 4,
+    "team": "SC Cambuur O21",
+    "gs": 8,
+    "dv": 21,
+    "dt": 13,
+    "ds": 8,
+    "pt": 13
+   },
+   {
+    "pos": 5,
     "team": "FC Twente / Heracles Academie O21",
     "gs": 9,
     "dv": 12,
     "dt": 17,
     "ds": -5,
     "pt": 11
-   },
-   {
-    "pos": 5,
-    "team": "SC Cambuur O21",
-    "gs": 7,
-    "dv": 15,
-    "dt": 11,
-    "ds": 4,
-    "pt": 10
    },
    {
     "pos": 6,
@@ -58,19 +58,19 @@
    {
     "pos": 7,
     "team": "Willem II O21",
-    "gs": 8,
-    "dv": 10,
-    "dt": 17,
-    "ds": -7,
-    "pt": 5
+    "gs": 9,
+    "dv": 12,
+    "dt": 18,
+    "ds": -6,
+    "pt": 8
    },
    {
     "pos": 8,
     "team": "Go Ahead Eagles O21",
-    "gs": 8,
-    "dv": 7,
-    "dt": 19,
-    "ds": -12,
+    "gs": 9,
+    "dv": 8,
+    "dt": 21,
+    "ds": -13,
     "pt": 5
    }
   ],
