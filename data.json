@@ -4,84 +4,84 @@
    {
     "pos": 1,
     "team": "Feyenoord O21",
-    "gs": 8,
-    "dv": 26,
-    "dt": 5,
-    "ds": 21,
-    "pt": 24
+    "gs": 9,
+    "dv": 29,
+    "dt": 7,
+    "ds": 22,
+    "pt": 27
    },
    {
     "pos": 2,
     "team": "PEC Zwolle O21",
-    "gs": 9,
+    "gs": 10,
     "dv": 11,
     "dt": 11,
     "ds": 0,
-    "pt": 15
+    "pt": 16
    },
    {
     "pos": 3,
-    "team": "FC Groningen O21",
+    "team": "SC Cambuur O21",
     "gs": 9,
-    "dv": 18,
-    "dt": 19,
-    "ds": -1,
+    "dv": 21,
+    "dt": 13,
+    "ds": 8,
     "pt": 14
    },
    {
     "pos": 4,
-    "team": "SC Cambuur O21",
-    "gs": 8,
-    "dv": 21,
-    "dt": 13,
-    "ds": 8,
-    "pt": 13
+    "team": "FC Groningen O21",
+    "gs": 10,
+    "dv": 20,
+    "dt": 22,
+    "ds": -2,
+    "pt": 14
    },
    {
     "pos": 5,
-    "team": "FC Twente / Heracles Academie O21",
-    "gs": 9,
-    "dv": 12,
-    "dt": 17,
-    "ds": -5,
+    "team": "Willem II O21",
+    "gs": 10,
+    "dv": 15,
+    "dt": 18,
+    "ds": -3,
     "pt": 11
    },
    {
     "pos": 6,
-    "team": "De Graafschap O21",
-    "gs": 9,
-    "dv": 9,
-    "dt": 13,
-    "ds": -4,
-    "pt": 10
+    "team": "FC Twente / Heracles Academie O21",
+    "gs": 10,
+    "dv": 12,
+    "dt": 20,
+    "ds": -8,
+    "pt": 11
    },
    {
     "pos": 7,
-    "team": "Willem II O21",
-    "gs": 9,
-    "dv": 12,
-    "dt": 18,
-    "ds": -6,
-    "pt": 8
+    "team": "De Graafschap O21",
+    "gs": 10,
+    "dv": 10,
+    "dt": 17,
+    "ds": -7,
+    "pt": 10
    },
    {
     "pos": 8,
     "team": "Go Ahead Eagles O21",
-    "gs": 9,
-    "dv": 8,
-    "dt": 21,
-    "ds": -13,
-    "pt": 5
+    "gs": 10,
+    "dv": 12,
+    "dt": 22,
+    "ds": -10,
+    "pt": 8
    }
   ],
   "matches": {
    "Feyenoord O21": {
     "last": {
-     "date": "2026-11-07",
-     "time": "12:15",
-     "home": "Feyenoord O21",
-     "away": "FC Groningen O21",
-     "score": "3-2"
+     "date": "2026-10-31",
+     "time": "14:45",
+     "home": "PEC Zwolle O21",
+     "away": "Feyenoord O21",
+     "score": "1-2"
     },
     "next": [
      {
