@@ -336,6 +336,23 @@ def is_najaarskampioen(table, total_games=None):
     return fey["pt"] > best_rival
 
 
+def feest_html(data):
+    """Feestelijke extra's (gouden banner, confetti, trofee bij de naam) zodra Feyenoord najaarskampioen is."""
+    if not is_najaarskampioen(data["o21"]["table"]):
+        return ""
+    kleuren = ["#d4111c", "#f5c518", "#9e0c14", "#ffe27a", "#1a1214"]
+    stukjes = []
+    for i in range(40):  # vaste waarden (geen random), zodat de pagina niet elke run verandert
+        breed = 6 + (i % 4) * 3
+        stukjes.append(
+            f'<i style="left:{(i * 37) % 100}%;width:{breed}px;height:{breed + 4}px;'
+            f'background:{kleuren[i % len(kleuren)]};animation-duration:{4 + (i % 5) * 0.7:.1f}s;'
+            f'animation-delay:{(i % 10) * 0.35:.2f}s"></i>')
+    return ('<div class="feest">\U0001F3C6 Feyenoord O21 is najaarskampioen!</div>'
+            '<style>tr.me td:nth-child(2)::after{content:" \U0001F3C6"}</style>'
+            '<div class="confetti" aria-hidden="true">' + "".join(stukjes) + '</div>')
+
+
 def promotie_html(data):
     """Uitlegblok over promotie, met de actuele rangschikking van Feyenoord O21 en de Jong-teams."""
     o21 = data["o21"]["table"]
@@ -387,7 +404,7 @@ def build_html(data, warnings):
     now = dt.datetime.now(dt.timezone.utc).astimezone().strftime("%d-%m-%Y %H:%M")
     return (t.replace("{{UPDATED}}", esc(now))
             .replace("{{WARNINGS}}", warn)
-            .replace("{{MOOD}}", "")
+            .replace("{{FEEST}}", feest_html(data))
             .replace("{{PROMOTIE}}", promotie_html(data))
             .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me", " O21"))
             .replace("{{O21_MATCHES}}", match_block(o["matches"]["Feyenoord O21"], "Feyenoord O21"))
