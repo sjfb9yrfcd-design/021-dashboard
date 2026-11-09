@@ -26,6 +26,8 @@ SEASON_START_YEAR = 2026  # seizoen 2026-2027 (voor datums zonder jaartal)
 # Aantal wedstrijden per team in de O21-najaarscompetitie. None = automatisch: thuis en uit tegen
 # elke tegenstander, dus 2 x (aantal teams - 1). Vul een getal in als het aantal anders is.
 O21_TOTAL_GAMES = None
+# Zoveel dagen na het behalen van de najaarstitel blijven banner en confetti staan; daarna alleen een subtiele badge.
+FEEST_DAGEN = 14
 
 SECTIONS = {
     "o21": {
@@ -336,10 +338,28 @@ def is_najaarskampioen(table, total_games=None):
     return fey["pt"] > best_rival
 
 
-def feest_html(data):
+def markeer_kampioen(data, today):
+    """Legt vast (in data.json) sinds wanneer Feyenoord najaarskampioen is. Wordt nooit meer overschreven."""
+    if "najaarskampioen" not in data and is_najaarskampioen(data["o21"]["table"]):
+        data["najaarskampioen"] = {"sinds": today}
+
+
+def kampioen_dagen(data, today=None):
+    """None = niet kampioen; anders het aantal dagen sinds de titel (0 = vandaag)."""
+    sinds = data.get("najaarskampioen", {}).get("sinds")
+    if not sinds:  # nog niet vastgelegd, maar wel zeker volgens de huidige tabel
+        return 0 if is_najaarskampioen(data["o21"]["table"]) else None
+    today = today or dt.date.today()
+    return max((today - dt.date.fromisoformat(sinds)).days, 0)
+
+
+def feest_html(data, today=None):
     """Feestelijke extra's (gouden banner, confetti, trofee bij de naam) zodra Feyenoord najaarskampioen is."""
-    if not is_najaarskampioen(data["o21"]["table"]):
+    dagen = kampioen_dagen(data, today)
+    if dagen is None:
         return ""
+    if dagen >= FEEST_DAGEN:  # subtiel: alleen een kleine badge, geen confetti
+        return '<div class="badge">\U0001F3C6 Najaarskampioen O21</div>'
     kleuren = ["#d4111c", "#f5c518", "#9e0c14", "#ffe27a", "#1a1214"]
     stukjes = []
     for i in range(40):  # vaste waarden (geen random), zodat de pagina niet elke run verandert
@@ -361,7 +381,7 @@ def promotie_html(data):
     pos_fey = f'op de <b>{feyenoord["pos"]}e</b> plek' if feyenoord else "<b>onbekend</b>"
     kampioen = ("<b>Feyenoord is niet meer te achterhalen in de najaarscompetitie en is dus "
                 "najaarskampioen! Op naar de voorjaarscompetitie.</b> "
-                if is_najaarskampioen(o21) else "")
+                if kampioen_dagen(data) is not None else "")
 
     jong = [r for r in td if r["team"] in SECTIONS["td"]["highlight"]]
     if jong:
@@ -454,6 +474,7 @@ def main():
                 warnings.append(f"Kon '{key}' niet verversen; oude gegevens worden getoond.")
             else:
                 sys.exit(f"Geen gegevens voor '{key}' en geen eerdere versie. Draai: python scrape.py --debug")
+    markeer_kampioen(data, today)
     DATA.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(build_html(data, warnings), encoding="utf-8")
