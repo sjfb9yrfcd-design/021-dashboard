@@ -23,6 +23,9 @@ DEBUG = "--debug" in sys.argv
 
 # ---------------------------------------------------------------- instellingen
 SEASON_START_YEAR = 2026  # seizoen 2026-2027 (voor datums zonder jaartal)
+# Aantal wedstrijden per team in de O21-najaarscompetitie. None = automatisch: thuis en uit tegen
+# elke tegenstander, dus 2 x (aantal teams - 1). Vul een getal in als het aantal anders is.
+O21_TOTAL_GAMES = None
 
 SECTIONS = {
     "o21": {
@@ -318,12 +321,30 @@ def punten(n):
     return f"{n} punt" if n == 1 else f"{n} punten"
 
 
+def is_najaarskampioen(table, total_games=None):
+    """True als Feyenoord O21 wiskundig niet meer te achterhalen is in de najaarscompetitie.
+
+    Alle concurrenten kunnen met hun resterende wedstrijden maximaal (punten + 3 x resterend) halen;
+    Feyenoord moet daar strikt boven staan (bij gelijk aantal punten telt het nog niet als zeker).
+    """
+    fey = next((r for r in table if r["team"] == "Feyenoord O21"), None)
+    others = [r for r in table if r["team"] != "Feyenoord O21"]
+    if not fey or not others:
+        return False
+    total = total_games or O21_TOTAL_GAMES or 2 * (len(table) - 1)
+    best_rival = max(r["pt"] + 3 * max(total - r["gs"], 0) for r in others)
+    return fey["pt"] > best_rival
+
+
 def promotie_html(data):
     """Uitlegblok over promotie, met de actuele rangschikking van Feyenoord O21 en de Jong-teams."""
     o21 = data["o21"]["table"]
     td = data["td"]["table"]
     feyenoord = next((r for r in o21 if r["team"] == "Feyenoord O21"), None)
     pos_fey = f'op de <b>{feyenoord["pos"]}e</b> plek' if feyenoord else "<b>onbekend</b>"
+    kampioen = ("<b>Feyenoord is niet meer te achterhalen in de najaarscompetitie en is dus "
+                "najaarskampioen! Op naar de voorjaarscompetitie.</b> "
+                if is_najaarskampioen(o21) else "")
 
     jong = [r for r in td if r["team"] in SECTIONS["td"]["highlight"]]
     if jong:
@@ -347,7 +368,7 @@ def promotie_html(data):
             "<p>Om te kunnen promoveren moet er aan twee voorwaarden worden voldaan.</p>"
             "<p>Ten eerste moet Feyenoord algeheel kampioen worden van de O21-competitie. Deze competitie is "
             "gesplitst in een najaarscompetitie en een voorjaarscompetitie. In de najaarscompetitie staat "
-            f"Feyenoord {pos_fey}. Als een club beide competities wint is zij automatisch algeheel kampioen. "
+            f"Feyenoord {pos_fey}. {kampioen}Als een club beide competities wint is zij automatisch algeheel kampioen. "
             "Anders volgt een beslissingswedstrijd.</p>"
             "<p>Ten tweede moet \u00e9\u00e9n van de twee Jong-ploegen in de Tweede Divisie minimaal in het "
             f"rechterrijtje eindigen. {tweede}</p>"
