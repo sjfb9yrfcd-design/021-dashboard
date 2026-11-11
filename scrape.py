@@ -20,6 +20,7 @@ DATA = ROOT / "data.json"
 OUT = ROOT / "docs" / "index.html"
 TEMPLATE = ROOT / "template.html"
 DEBUG = "--debug" in sys.argv
+KAMPIOEN_HANDMATIG = "--kampioen" in sys.argv  # handmatig doorgeven dat Feyenoord najaarskampioen is
 
 # ---------------------------------------------------------------- instellingen
 SEASON_START_YEAR = 2026  # seizoen 2026-2027 (voor datums zonder jaartal)
@@ -338,9 +339,15 @@ def is_najaarskampioen(table, total_games=None):
     return fey["pt"] > best_rival
 
 
-def markeer_kampioen(data, today):
-    """Legt vast (in data.json) sinds wanneer Feyenoord najaarskampioen is. Wordt nooit meer overschreven."""
-    if "najaarskampioen" not in data and is_najaarskampioen(data["o21"]["table"]):
+def markeer_kampioen(data, today, handmatig=False):
+    """Legt vast (in data.json) sinds wanneer Feyenoord najaarskampioen is. Wordt nooit meer overschreven.
+
+    handmatig=True (via `python scrape.py --kampioen`) legt de titel vast, ook als de bron nog niet bijgewerkt is."""
+    if "najaarskampioen" in data:
+        return
+    if handmatig:
+        data["najaarskampioen"] = {"sinds": today, "handmatig": True}
+    elif is_najaarskampioen(data["o21"]["table"]):
         data["najaarskampioen"] = {"sinds": today}
 
 
@@ -474,7 +481,7 @@ def main():
                 warnings.append(f"Kon '{key}' niet verversen; oude gegevens worden getoond.")
             else:
                 sys.exit(f"Geen gegevens voor '{key}' en geen eerdere versie. Draai: python scrape.py --debug")
-    markeer_kampioen(data, today)
+    markeer_kampioen(data, today, KAMPIOEN_HANDMATIG)
     DATA.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(build_html(data, warnings), encoding="utf-8")
