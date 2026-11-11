@@ -12,6 +12,11 @@ on:
     - cron: "0 11 * * 2"
     - cron: "0 12 * * 2"
   workflow_dispatch:             # handmatig starten via het tabblad Actions
+    inputs:
+      kampioen:
+        description: "Feyenoord O21 is najaarskampioen (zelf bevestigen, voordat de bron het toont)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -25,7 +30,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python scrape.py
+      - run: python scrape.py ${{ inputs.kampioen && '--kampioen' || '' }}
       - name: Wijzigingen opslaan
         run: |
           git config user.name "dashboard-bot"
