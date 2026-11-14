@@ -107,14 +107,23 @@
    {
     "pos": 1,
     "team": "Quick Boys",
-    "gs": 12,
-    "dv": 34,
-    "dt": 9,
-    "ds": 25,
-    "pt": 31
+    "gs": 13,
+    "dv": 36,
+    "dt": 10,
+    "ds": 26,
+    "pt": 34
    },
    {
     "pos": 2,
+    "team": "IJsselmeervogels",
+    "gs": 13,
+    "dv": 21,
+    "dt": 11,
+    "ds": 10,
+    "pt": 28
+   },
+   {
+    "pos": 3,
     "team": "Kozakken Boys",
     "gs": 13,
     "dv": 33,
@@ -123,22 +132,13 @@
     "pt": 27
    },
    {
-    "pos": 3,
+    "pos": 4,
     "team": "HHC",
     "gs": 13,
     "dv": 24,
     "dt": 16,
     "ds": 8,
     "pt": 27
-   },
-   {
-    "pos": 4,
-    "team": "IJsselmeervogels",
-    "gs": 12,
-    "dv": 19,
-    "dt": 10,
-    "ds": 9,
-    "pt": 25
    },
    {
     "pos": 5,
@@ -152,10 +152,10 @@
    {
     "pos": 6,
     "team": "De Treffers",
-    "gs": 12,
+    "gs": 13,
     "dv": 31,
-    "dt": 17,
-    "ds": 14,
+    "dt": 19,
+    "ds": 12,
     "pt": 22
    },
    {
@@ -170,14 +170,23 @@
    {
     "pos": 8,
     "team": "Barendrecht",
-    "gs": 12,
-    "dv": 21,
-    "dt": 19,
-    "ds": 2,
+    "gs": 13,
+    "dv": 22,
+    "dt": 21,
+    "ds": 1,
     "pt": 20
    },
    {
     "pos": 9,
+    "team": "AFC",
+    "gs": 13,
+    "dv": 22,
+    "dt": 24,
+    "ds": -2,
+    "pt": 17
+   },
+   {
+    "pos": 10,
     "team": "Spakenburg",
     "gs": 13,
     "dv": 19,
@@ -186,7 +195,7 @@
     "pt": 17
    },
    {
-    "pos": 10,
+    "pos": 11,
     "team": "HFC",
     "gs": 13,
     "dv": 21,
@@ -195,22 +204,13 @@
     "pt": 15
    },
    {
-    "pos": 11,
-    "team": "AFC",
-    "gs": 12,
-    "dv": 20,
-    "dt": 24,
-    "ds": -4,
-    "pt": 14
-   },
-   {
     "pos": 12,
     "team": "Katwijk",
-    "gs": 12,
-    "dv": 16,
-    "dt": 25,
+    "gs": 13,
+    "dv": 17,
+    "dt": 26,
     "ds": -9,
-    "pt": 14
+    "pt": 15
    },
    {
     "pos": 13,
@@ -224,10 +224,10 @@
    {
     "pos": 14,
     "team": "Jong Almere City",
-    "gs": 12,
-    "dv": 23,
-    "dt": 26,
-    "ds": -3,
+    "gs": 13,
+    "dv": 24,
+    "dt": 28,
+    "ds": -4,
     "pt": 13
    },
    {
@@ -260,11 +260,11 @@
    {
     "pos": 18,
     "team": "Rohda Raalte",
-    "gs": 12,
-    "dv": 10,
-    "dt": 37,
+    "gs": 13,
+    "dv": 11,
+    "dt": 38,
     "ds": -27,
-    "pt": 1
+    "pt": 2
    }
   ],
   "matches": {
@@ -295,11 +295,11 @@
    },
    "Jong Almere City": {
     "last": {
-     "date": "2026-11-07",
+     "date": "2026-11-14",
      "time": "",
-     "home": "Jong Almere City",
-     "away": "Kozakken Boys",
-     "score": "1-5"
+     "home": "Quick Boys",
+     "away": "Jong Almere City",
+     "score": "2-1"
     },
     "next": [
      {
