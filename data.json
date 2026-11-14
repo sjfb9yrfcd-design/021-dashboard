@@ -270,25 +270,25 @@
   "matches": {
    "Jong Sparta": {
     "last": {
-     "date": "2026-11-07",
+     "date": "2026-11-14",
      "time": "",
-     "home": "Jong Sparta",
-     "away": "AFC",
-     "score": "5-5"
+     "home": "Kozakken Boys",
+     "away": "Jong Sparta",
+     "score": "3-1"
     },
     "next": [
-     {
-      "date": "2026-11-14",
-      "time": "14:00",
-      "home": "Kozakken Boys",
-      "away": "Jong Sparta",
-      "score": null
-     },
      {
       "date": "2026-11-21",
       "time": "15:00",
       "home": "Jong Sparta",
       "away": "Quick Boys",
+      "score": null
+     },
+     {
+      "date": "2026-11-28",
+      "time": "15:00",
+      "home": "IJsselmeervogels",
+      "away": "Jong Sparta",
       "score": null
      }
     ]
@@ -304,7 +304,7 @@
     "next": [
      {
       "date": "2026-11-14",
-      "time": "15:00",
+      "time": "",
       "home": "Quick Boys",
       "away": "Jong Almere City",
       "score": null
