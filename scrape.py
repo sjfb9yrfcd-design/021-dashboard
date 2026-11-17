@@ -408,6 +408,73 @@ def verloop_svg(hist):
             f'ronde {hist[-1]["ronde"]}</text></svg>')
 
 
+def jong_afstand_tekst(td, row):
+    """Afstand van een Jong-team tot het linkerrijtje (de nummers 1 t/m 9), als korte tekst."""
+    nr9 = next((r for r in td if r["pos"] == 9), None)
+    nr10 = next((r for r in td if r["pos"] == 10), None)
+    if row["pos"] > 9 and nr9:
+        gap = nr9["pt"] - row["pt"]
+        return "gelijk met de nummer 9 van het linkerrijtje" if gap == 0 else f"{punten(gap)} van het linkerrijtje"
+    if nr10:
+        return f"in het linkerrijtje, {punten(max(row['pt'] - nr10['pt'], 0))} boven het rechterrijtje"
+    return "in het linkerrijtje"
+
+
+def volgende_regel(info, focus):
+    """Eén regel met de eerstvolgende wedstrijd, voor op het overzicht."""
+    nxt = (info or {}).get("next") or []
+    if not nxt:
+        return ""
+    m = nxt[0]
+    d = dt.date.fromisoformat(m["date"])
+    wanneer = f"{WEEKDAYS[d.weekday()]} {d.day} {MONTHS_NL[d.month - 1]}" + (f" {m['time']}" if m.get("time") else "")
+    thuis = m["home"] == focus
+    tegen = (m["away"] if thuis else m["home"]).removesuffix(" O21")
+    return f'<p class="nx">Volgende: {esc(wanneer)} \u00b7 {esc(tegen)} ({"thuis" if thuis else "uit"})</p>'
+
+
+def overzicht_html(data):
+    """Korte samenvatting voor het tabblad Overzicht: Feyenoord O21 en de twee Jong-teams."""
+    o21, td = data["o21"]["table"], data["td"]["table"]
+    kaarten = []
+
+    fey = next((r for r in o21 if r["team"] == "Feyenoord O21"), None)
+    if fey:
+        pill = ' <span class="pill">\U0001F3C6 Najaarskampioen</span>' if kampioen_dagen(data) is not None else ""
+        anderen = sorted((r for r in o21 if r is not fey), key=lambda r: r["pos"])
+        if fey["pos"] == 1 and anderen:
+            tweede = anderen[0]
+            gap = f'{punten(fey["pt"] - tweede["pt"])} voor op nr. 2 ({esc(SHORT_NAMES.get(tweede["team"], tweede["team"]).removesuffix(" O21"))})'
+        elif anderen:
+            kop = min(o21, key=lambda r: r["pos"])
+            gap = f'{punten(kop["pt"] - fey["pt"])} achter op nr. 1'
+        else:
+            gap = ""
+        kaarten.append(
+            f'<div class="card sum"><h3>Feyenoord O21{pill}</h3>'
+            f'<div class="big">{fey["pos"]}e<small>najaarscompetitie</small></div>'
+            f'<p class="kv">{punten(fey["pt"])} uit {fey["gs"]} wedstrijden</p>'
+            + (f'<p class="gap">{gap}</p>' if gap else "")
+            + volgende_regel(data["o21"]["matches"].get("Feyenoord O21"), "Feyenoord O21")
+            + '<a class="more" href="#o21">Volledige stand \u2192</a></div>')
+
+    jong = [r for r in td if r["team"] in SECTIONS["td"]["highlight"]]
+    laagste = max(jong, key=lambda r: r["pos"])["team"] if jong else None
+    for naam in SECTIONS["td"]["focus"]:
+        row = next((r for r in td if r["team"] == naam), None)
+        if not row:
+            continue
+        pill = ' <span class="pill">laagst geklasseerd</span>' if naam == laagste else ""
+        kaarten.append(
+            f'<div class="card sum"><h3>{esc(naam)}{pill}</h3>'
+            f'<div class="big">{row["pos"]}e<small>Tweede Divisie</small></div>'
+            f'<p class="kv">{punten(row["pt"])} uit {row["gs"]} wedstrijden</p>'
+            f'<p class="gap">{jong_afstand_tekst(td, row)}</p>'
+            + volgende_regel(data["td"]["matches"].get(naam), naam)
+            + '<a class="more" href="#tweede-divisie">Volledige stand \u2192</a></div>')
+    return '<div class="sums">' + "".join(kaarten) + "</div>"
+
+
 def historie_html(data):
     hist = sorted(data.get("historie", {}).values(), key=lambda e: e["ronde"])
     if not hist:
@@ -507,12 +574,13 @@ def build_html(data, warnings):
     return (t.replace("{{UPDATED}}", esc(now))
             .replace("{{WARNINGS}}", warn)
             .replace("{{FEEST}}", feest_html(data))
+            .replace("{{OVERZICHT}}", overzicht_html(data))
             .replace("{{PROMOTIE}}", promotie_html(data))
             .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me", " O21"))
             .replace("{{O21_MATCHES}}", match_block(o["matches"]["Feyenoord O21"], "Feyenoord O21"))
             .replace("{{TD_TABLE}}", table_html(d["table"], SECTIONS["td"]["highlight"], "jong"))
             .replace("{{TD_CARDS}}", cards)
-            .replace("{{HISTORIE}}", historie_html(data)))
+            .replace("{{HISTORIE}}", historie_html(data) or '<div class="card">Nog geen historie beschikbaar.</div>'))
 
 
 # ---------------------------------------------------------------- hoofdprogramma
