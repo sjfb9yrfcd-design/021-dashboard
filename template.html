@@ -57,7 +57,7 @@ footer{margin-top:28px;color:var(--mute);font-size:13px}
 .up{color:var(--win);font-weight:700}.down{color:var(--loss);font-weight:700}
 .uitleg{margin:12px 0 0;font-size:13px;color:var(--mute)}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px}
-.tab{flex:0 0 auto;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap}
+.tab{flex:0 0 auto;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
 .tab[aria-current="page"]{background:var(--red);border-color:var(--red);color:#fff}
 .tab:focus-visible{outline:3px solid var(--redd);outline-offset:2px}
 .js .panel{display:none}.js .panel.on{display:block}
@@ -77,14 +77,135 @@ footer{margin-top:28px;color:var(--mute);font-size:13px}
 @keyframes val{0%{opacity:1;transform:translateY(0) rotate(0)}85%{opacity:1}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){.confetti{display:none}.feest{animation:none}}
 @media (prefers-color-scheme:dark){
-:root{--bg:#000;--card:#000;--ink:#fff;--mute:#b8b8b8;--line:#3a3a3a;--red:#fff;--redd:#fff;--acc:#fff;--hi:#1c1c1c;--jong:#1c1c1c;--jongink:#fff;--win:#4cd98a;--draw:#e0c84a;--loss:#ff7b7b;color-scheme:dark}
-:root .top{background:#000;color:#fff;border-bottom:3px solid #fff}
-:root h2,:root h2.j{background:transparent;color:#fff;border-radius:0;padding:6px 0;border-bottom:2px solid #fff}
-:root th,:root h2.j~.grid th{background:#000;color:#fff;border-bottom:2px solid #fff}
-:root .tab{border-color:#5a5a5a}
-:root .tab[aria-current="page"]{background:#fff;border-color:#fff;color:#000}
-:root .sum .more{text-decoration:underline}
-:root .warn{border-color:#fff}
+  :root{
+    --bg:#0b0c0f;
+    --card:#14161b;
+    --ink:#ffffff;
+    --mute:#a6acb8;
+    --line:#282c36;
+    --red:#ce1126;
+    --redd:#940a19;
+    --acc:#ff4256;
+    --hi:rgba(206,17,38,.18);
+    --jong:rgba(245,197,24,.14);
+    --jongink:#f5c518;
+    --win:#3dd68c;
+    --draw:#f5c518;
+    --loss:#ff5c6c;
+    color-scheme:dark;
+  }
+
+  /* Header als de iconische rode kraag met witte bies & 90's schouderstrepen */
+  .top{
+    background:
+      repeating-linear-gradient(
+        -55deg,
+        transparent 0px,
+        transparent 22px,
+        rgba(255,255,255,.045) 22px,
+        rgba(255,255,255,.045) 36px,
+        rgba(206,17,38,.18) 36px,
+        rgba(206,17,38,.18) 40px
+      ),
+      linear-gradient(135deg,#ce1126 0%,#8f0b1a 48%,#111216 100%);
+    color:#ffffff;
+    border-bottom:3px solid #ffffff;
+    box-shadow:0 3px 0 #ce1126, 0 10px 28px rgba(0,0,0,.6);
+  }
+  .top h1{
+    text-transform:uppercase;
+    letter-spacing:.01em;
+    font-weight:900;
+  }
+
+  /* Sectiekoppen: strak koolstof-antraciet met rode & witte retro-bies links */
+  h2{
+    background:linear-gradient(90deg,#1c1f27 0%,#14161b 100%);
+    color:#ffffff;
+    border:1px solid var(--line);
+    border-left:5px solid #ce1126;
+    box-shadow:inset 2px 0 0 rgba(255,255,255,.75);
+  }
+  h2.j{
+    background:linear-gradient(90deg,#1c1f27 0%,#14161b 100%);
+    border-left:5px solid #f5c518;
+    box-shadow:inset 2px 0 0 rgba(255,255,255,.75);
+  }
+
+  /* Kaarten met subtiele diepte */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:0 6px 20px rgba(0,0,0,.45);
+  }
+
+  /* Tabellen: strakke 90's uitshirt-contrasten */
+  th{
+    background:#1b1e26;
+    color:#ffffff;
+    border-bottom:2px solid #ce1126;
+    text-transform:uppercase;
+    font-size:12px;
+    letter-spacing:.04em;
+  }
+  h2.j~.grid th{
+    background:#1b1e26;
+    border-bottom:2px solid #f5c518;
+  }
+  tbody tr:nth-child(even) td{
+    background:rgba(255,255,255,.018);
+  }
+  tbody tr:hover td{
+    background:rgba(255,255,255,.045);
+  }
+  tr.me td{
+    background:rgba(206,17,38,.22);
+    color:#ffffff;
+  }
+  tr.jong td{
+    background:rgba(245,197,24,.15);
+    color:#ffffff;
+  }
+
+  /* Tabs in shirt-kleuren */
+  .tab{
+    background:#14161b;
+    border:1px solid #323744;
+    color:#d8dde8;
+  }
+  .tab:hover{
+    border-color:#ffffff;
+    color:#ffffff;
+  }
+  .tab[aria-current="page"]{
+    background:#ce1126;
+    border-color:#ffffff;
+    color:#ffffff;
+    box-shadow:0 2px 10px rgba(206,17,38,.45);
+  }
+
+  /* Samenvattingskaarten & waarschuwingen */
+  .sum .gap{
+    background:#1b1e26;
+    border:1px solid #2e3340;
+    color:#ffffff;
+  }
+  .sum .more{
+    color:#ffffff;
+    text-decoration:underline;
+    text-decoration-color:#ce1126;
+    text-underline-offset:3px;
+  }
+  .warn{
+    background:rgba(206,17,38,.16);
+    border:1px solid #ce1126;
+    border-left:4px solid #ffffff;
+    color:#ffffff;
+  }
+  .s.n{
+    background:#1b1e26;
+    border-color:#2e3340;
+  }
 }
 </style>
 <script>document.documentElement.classList.add("js")</script>
