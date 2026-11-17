@@ -9,6 +9,7 @@ import datetime as dt
 import html as H
 import json
 import re
+import statistics
 import sys
 from pathlib import Path
 
@@ -360,6 +361,80 @@ def kampioen_dagen(data, today=None):
     return max((today - dt.date.fromisoformat(sinds)).days, 0)
 
 
+def jong_status(td):
+    """Laagst geklasseerde Jong-team en zijn afstand (in punten) tot de nummer 9, de onderkant van het linkerrijtje."""
+    jong = [r for r in td if r["team"] in SECTIONS["td"]["highlight"]]
+    nr9 = next((r for r in td if r["pos"] == 9), None)
+    if not jong or not nr9:
+        return None
+    low = max(jong, key=lambda r: r["pos"])
+    return {"team": low["team"], "pos": low["pos"], "pt": low["pt"], "gap": nr9["pt"] - low["pt"]}
+
+
+def update_historie(data, today):
+    """Bewaart per speelronde de positie van het laagste Jong-team en de afstand tot het linkerrijtje.
+
+    De speelronde is het mediane aantal gespeelde wedstrijden in de Tweede Divisie. Binnen dezelfde ronde
+    wordt de laatste stand bewaard, zodat de waarde aan het eind van de ronde blijft staan."""
+    td = data["td"]["table"]
+    status = jong_status(td)
+    if not td or not status:
+        return
+    ronde = statistics.median_low([r["gs"] for r in td])
+    data.setdefault("historie", {})[str(ronde)] = dict(status, ronde=ronde, datum=today)
+
+
+def verloop_svg(hist):
+    W, H, P = 300, 96, 16
+    ys = [e["gap"] for e in hist]
+    lo, hi = min(ys), max(ys)
+    span = max(hi - lo, 1)
+    n = len(hist)
+    pts = [(P + (W - 2 * P) * i / (n - 1), P + (H - 2 * P - 8) * (1 - (e["gap"] - lo) / span))
+           for i, e in enumerate(hist)]
+    poly = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    toon = set(range(n)) if n <= 12 else {0, n - 1, ys.index(lo), ys.index(hi)}
+    dots = "".join(
+        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3" fill="var(--red)"><title>Ronde {e["ronde"]}: '
+        f'{e["gap"]} punten</title></circle>'
+        + (f'<text x="{x:.1f}" y="{y - 7:.1f}" text-anchor="middle" font-size="10" fill="var(--ink)">{e["gap"]}</text>'
+           if i in toon else "")
+        for i, ((x, y), e) in enumerate(zip(pts, hist)))
+    return (f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="Punten tot het linkerrijtje per speelronde" '
+            f'style="width:100%;max-width:520px;height:auto;margin-top:12px">'
+            f'<polyline points="{poly}" fill="none" stroke="var(--red)" stroke-width="2"/>{dots}'
+            f'<text x="{P}" y="{H - 2}" font-size="10" fill="var(--mute)">ronde {hist[0]["ronde"]}</text>'
+            f'<text x="{W - P}" y="{H - 2}" text-anchor="end" font-size="10" fill="var(--mute)">'
+            f'ronde {hist[-1]["ronde"]}</text></svg>')
+
+
+def historie_html(data):
+    hist = sorted(data.get("historie", {}).values(), key=lambda e: e["ronde"])
+    if not hist:
+        return ""
+    rows, prev = [], None
+    for e in hist:
+        if prev is None:
+            delta = "\u2013"
+        else:
+            d = e["gap"] - prev["gap"]
+            delta = ("0" if d == 0 else f'<span class="up">+{d}</span>' if d > 0
+                     else f'<span class="down">\u2212{-d}</span>')
+        afstand = "links" if e["pos"] <= 9 else str(e["gap"])
+        rows.append(f'<tr><td>{e["ronde"]}</td><td title="{esc(e["team"])}">{esc(e["team"])}</td>'
+                    f'<td>{e["pos"]}</td><td>{e["pt"]}</td><td class="pt">{afstand}</td><td>{delta}</td></tr>')
+        prev = e
+    tabel = ("<table><thead><tr><th>Ronde</th><th>Laagste Jong-team</th><th>Pos</th><th>Pt</th>"
+             "<th title='Punten tot het linkerrijtje'>Afst.</th><th title='Verandering t.o.v. vorige ronde'>\u0394</th>"
+             "</tr></thead><tbody>" + "".join(reversed(rows)) + "</tbody></table>")
+    grafiek = verloop_svg(hist) if len(hist) >= 3 else ""
+    uitleg = ('<p class="uitleg">Afst. = punten tot de nummer 9 (het linkerrijtje); &Delta; = verandering ten opzichte '
+              'van de vorige ronde. Een grotere afstand (groen) is gunstig voor Feyenoord, een kleinere (rood) niet. '
+              'Per speelronde wordt de laatst bekende stand bewaard.</p>')
+    return ('<h2 class="j">Jong-teams: verloop per speelronde</h2><div class="grid"><div class="card scroll">'
+            + tabel + grafiek + uitleg + '</div></div>')
+
+
 def feest_html(data, today=None):
     """Feestelijke extra's (gouden banner, confetti, trofee bij de naam) zodra Feyenoord najaarskampioen is."""
     dagen = kampioen_dagen(data, today)
@@ -436,7 +511,8 @@ def build_html(data, warnings):
             .replace("{{O21_TABLE}}", table_html(o["table"], SECTIONS["o21"]["highlight"], "me", " O21"))
             .replace("{{O21_MATCHES}}", match_block(o["matches"]["Feyenoord O21"], "Feyenoord O21"))
             .replace("{{TD_TABLE}}", table_html(d["table"], SECTIONS["td"]["highlight"], "jong"))
-            .replace("{{TD_CARDS}}", cards))
+            .replace("{{TD_CARDS}}", cards)
+            .replace("{{HISTORIE}}", historie_html(data)))
 
 
 # ---------------------------------------------------------------- hoofdprogramma
@@ -470,10 +546,11 @@ def scrape_section(key, today):
 def main():
     today = dt.date.today().isoformat()
     old = json.loads(DATA.read_text()) if DATA.exists() else {}
-    data, warnings = dict(old), []
+    data, warnings, fresh = dict(old), [], set()
     for key in SECTIONS:
         try:
             data[key] = scrape_section(key, today)
+            fresh.add(key)
             print(f"{key}: OK ({len(data[key]['table'])} teams)")
         except Exception as e:
             print(f"FOUT bij {key}: {e}")
@@ -482,6 +559,8 @@ def main():
             else:
                 sys.exit(f"Geen gegevens voor '{key}' en geen eerdere versie. Draai: python scrape.py --debug")
     markeer_kampioen(data, today, KAMPIOEN_HANDMATIG)
+    if "td" in fresh:
+        update_historie(data, today)
     DATA.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(build_html(data, warnings), encoding="utf-8")
