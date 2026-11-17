@@ -509,7 +509,7 @@ def feest_html(data, today=None):
         return ""
     if dagen >= FEEST_DAGEN:  # subtiel: alleen een kleine badge, geen confetti
         return '<div class="badge">\U0001F3C6 Najaarskampioen O21</div>'
-    kleuren = ["#d4111c", "#f5c518", "#9e0c14", "#ffe27a", "#1a1214"]
+    kleuren = ["#d4111c", "#f5c518", "#9e0c14", "#ffe27a", "var(--ink)"]
     stukjes = []
     for i in range(40):  # vaste waarden (geen random), zodat de pagina niet elke run verandert
         breed = 6 + (i % 4) * 3
