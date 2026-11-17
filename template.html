@@ -56,31 +56,82 @@ footer{margin-top:28px;color:var(--mute);font-size:13px}
 .feest{display:inline-block;margin-top:12px;padding:8px 14px;border-radius:999px;background:linear-gradient(135deg,#ffe27a,#f5c518 55%,#d9a400);color:#3a2a00;font-weight:800;font-size:16px;box-shadow:0 2px 10px rgba(0,0,0,.25);animation:puls 2.4s ease-in-out infinite}
 @keyframes puls{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,226,122,.8);color:#ffe27a;font-weight:600;font-size:13px}
+.up{color:var(--win);font-weight:700}.down{color:var(--loss);font-weight:700}
+.uitleg{margin:12px 0 0;font-size:13px;color:var(--mute)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px}
+.tab{flex:0 0 auto;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap}
+.tab[aria-current="page"]{background:var(--red);border-color:var(--red);color:#fff}
+.tab:focus-visible{outline:3px solid var(--redd);outline-offset:2px}
+.js .panel{display:none}.js .panel.on{display:block}
+.sums{display:grid;gap:14px;grid-template-columns:1fr;margin-top:16px}
+@media(min-width:760px){.sums{grid-template-columns:repeat(3,1fr)}}
+.sum h3{margin:0 0 6px}
+.sum .big{font-size:30px;font-weight:800;color:var(--red);line-height:1.1}
+.sum .big small{font-size:13px;font-weight:600;color:var(--mute);margin-left:6px}
+.sum .kv{margin:6px 0 0;font-size:14px}
+.sum .gap{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:var(--hi);font-weight:600;font-size:14px}
+.sum .nx{margin:10px 0 0;font-size:13px;color:var(--mute)}
+.sum .more{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--red)}
+.pill{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#ffe27a,#f5c518);color:#3a2a00;vertical-align:middle}
 .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 .confetti i{position:absolute;top:-24px;display:block;border-radius:2px;opacity:0;animation:val linear 3 forwards}
 @keyframes val{0%{opacity:1;transform:translateY(0) rotate(0)}85%{opacity:1}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){.confetti{display:none}.feest{animation:none}}
 </style>
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
 <header class="top"><div class="in"><h1>Feyenoord O21 en de Jong-teams</h1>
 <p class="sub">Laatst bijgewerkt: {{UPDATED}}</p>{{FEEST}}</div></header>
 <main>
+<nav class="tabs" aria-label="Onderdelen van het dashboard">
+<a class="tab" id="tabbtn-overzicht" href="#overzicht" aria-current="page">Overzicht</a>
+<a class="tab" id="tabbtn-o21" href="#o21">O21</a>
+<a class="tab" id="tabbtn-tweede-divisie" href="#tweede-divisie">Tweede Divisie</a>
+<a class="tab" id="tabbtn-historie" href="#historie">Historie</a>
+</nav>
 {{WARNINGS}}
+<section class="panel on" id="tab-overzicht">
+{{OVERZICHT}}
 {{PROMOTIE}}
+</section>
+
+<section class="panel" id="tab-o21">
 <h2>Feyenoord O21: najaarscompetitie</h2>
 <div class="grid two">
  <div class="card scroll">{{O21_TABLE}}</div>
  <div class="card">{{O21_MATCHES}}</div>
 </div>
+</section>
 
+<section class="panel" id="tab-tweede-divisie">
 <h2 class="j">Tweede Divisie: Jong Sparta en Jong Almere City</h2>
 <div class="grid two">
  <div class="card scroll">{{TD_TABLE}}</div>
  <div style="display:grid;gap:14px;align-content:start">{{TD_CARDS}}</div>
 </div>
+</section>
+
+<section class="panel" id="tab-historie">
+{{HISTORIE}}
+</section>
 
 <footer>GS gespeeld, DV doelpunten voor, DT doelpunten tegen, DS doelsaldo, Pt punten. Bronnen: feyenoord.com (O21) en vi.nl (Tweede Divisie). Bij de Jong-teams is een winst rood en een verlies groen, want een verlies is gunstig voor Feyenoord. Programma's kunnen verschuiven.</footer>
 </main>
+<script>
+(function(){
+var namen=["overzicht","o21","tweede-divisie","historie"];
+function toon(){
+ var h=(location.hash||"").replace("#","");
+ if(namen.indexOf(h)<0)h="overzicht";
+ namen.forEach(function(n){
+  var p=document.getElementById("tab-"+n),b=document.getElementById("tabbtn-"+n);
+  if(p)p.classList.toggle("on",n===h);
+  if(b){if(n===h)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");}
+ });
+}
+window.addEventListener("hashchange",toon);toon();
+})();
+</script>
 </body>
 </html>
