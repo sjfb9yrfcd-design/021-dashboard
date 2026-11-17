@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Feyenoord O21 en Jong-teams Tweede Divisie</title>
 <style>
-:root{--bg:#ffffff;--card:#ffffff;--ink:#1a1214;--mute:#7a5f63;--line:#f0d4d6;--red:#d4111c;--redd:#9e0c14;--hi:#fde3e5;--jong:#fde3e5;--jongink:#9e0c14;--win:#1e8a4c;--draw:#8a6d12;--loss:#d4111c;
+:root{--bg:#ffffff;--card:#ffffff;--ink:#1a1214;--mute:#7a5f63;--line:#f0d4d6;--red:#d4111c;--redd:#9e0c14;--acc:#d4111c;--hi:#fde3e5;--jong:#fde3e5;--jongink:#9e0c14;--win:#1e8a4c;--draw:#8a6d12;--loss:#d4111c;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a0c0e;--card:#241214;--ink:#fff5f5;--mute:#d0a9ad;--line:#4a2226;--red:#ee2b36;--redd:#ee2b36;--hi:#4a1a1e;--jong:#4a1a1e;--jongink:#ff8a91;--win:#4cc07f;--draw:#d2bd4d;--loss:#ff6a72}}
-:root[data-theme="dark"]{--bg:#1a0c0e;--card:#241214;--ink:#fff5f5;--mute:#d0a9ad;--line:#4a2226;--red:#ee2b36;--redd:#ee2b36;--hi:#4a1a1e;--jong:#4a1a1e;--jongink:#ff8a91;--win:#4cc07f;--draw:#d2bd4d;--loss:#ff6a72}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -19,7 +17,7 @@ h1{font-size:28px;margin:0 0 4px;letter-spacing:-.01em}
 .sub{margin:0;opacity:.92}
 h2{font-size:19px;margin:28px 0 12px;padding:8px 12px;background:var(--red);color:#fff;border-radius:8px}
 h2.j{background:var(--redd)}
-h3{font-size:16px;margin:0 0 10px;color:var(--red)}
+h3{font-size:16px;margin:0 0 10px;color:var(--acc)}
 .card{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:14px}
 .scroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
@@ -31,7 +29,7 @@ td:nth-child(2){max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:n
 th:first-child,td:first-child{text-align:center;width:36px}
 tr.me td{background:var(--hi);font-weight:700}
 tr.jong td{background:var(--jong);font-weight:700}
-tr.me td:first-child{box-shadow:inset 3px 0 var(--red)}
+tr.me td:first-child{box-shadow:inset 3px 0 var(--acc)}
 tr.jong td:first-child{box-shadow:inset 3px 0 var(--jongink)}
 td.pt{font-weight:700}
 .grid{display:grid;gap:14px;grid-template-columns:1fr}
@@ -50,7 +48,7 @@ td.pt{font-weight:700}
 .info{margin-top:16px}
 .info p{margin:0 0 10px}
 .info p:last-child{margin:0}
-.info b{color:var(--red)}
+.info b{color:var(--acc)}
 footer{margin-top:28px;color:var(--mute);font-size:13px}
 @media(max-width:480px){main{padding-left:10px;padding-right:10px}.card{padding:10px}th,td{padding:6px 4px;font-size:13px}th:first-child,td:first-child{width:26px}}
 .feest{display:inline-block;margin-top:12px;padding:8px 14px;border-radius:999px;background:linear-gradient(135deg,#ffe27a,#f5c518 55%,#d9a400);color:#3a2a00;font-weight:800;font-size:16px;box-shadow:0 2px 10px rgba(0,0,0,.25);animation:puls 2.4s ease-in-out infinite}
@@ -66,17 +64,28 @@ footer{margin-top:28px;color:var(--mute);font-size:13px}
 .sums{display:grid;gap:14px;grid-template-columns:1fr;margin-top:16px}
 @media(min-width:760px){.sums{grid-template-columns:repeat(3,1fr)}}
 .sum h3{margin:0 0 6px}
-.sum .big{font-size:30px;font-weight:800;color:var(--red);line-height:1.1}
+.sum .big{font-size:30px;font-weight:800;color:var(--acc);line-height:1.1}
 .sum .big small{font-size:13px;font-weight:600;color:var(--mute);margin-left:6px}
 .sum .kv{margin:6px 0 0;font-size:14px}
 .sum .gap{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:var(--hi);font-weight:600;font-size:14px}
 .sum .nx{margin:10px 0 0;font-size:13px;color:var(--mute)}
-.sum .more{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--red)}
+.sum .more{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--acc);text-decoration:none}
 .pill{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#ffe27a,#f5c518);color:#3a2a00;vertical-align:middle}
+@media(max-width:480px){.tabs{gap:6px}.tab{padding:7px 12px;font-size:13px}}
 .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 .confetti i{position:absolute;top:-24px;display:block;border-radius:2px;opacity:0;animation:val linear 3 forwards}
 @keyframes val{0%{opacity:1;transform:translateY(0) rotate(0)}85%{opacity:1}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){.confetti{display:none}.feest{animation:none}}
+@media (prefers-color-scheme:dark){
+:root{--bg:#000;--card:#000;--ink:#fff;--mute:#b8b8b8;--line:#3a3a3a;--red:#fff;--redd:#fff;--acc:#fff;--hi:#1c1c1c;--jong:#1c1c1c;--jongink:#fff;--win:#4cd98a;--draw:#e0c84a;--loss:#ff7b7b;color-scheme:dark}
+:root .top{background:#000;color:#fff;border-bottom:3px solid #fff}
+:root h2,:root h2.j{background:transparent;color:#fff;border-radius:0;padding:6px 0;border-bottom:2px solid #fff}
+:root th,:root h2.j~.grid th{background:#000;color:#fff;border-bottom:2px solid #fff}
+:root .tab{border-color:#5a5a5a}
+:root .tab[aria-current="page"]{background:#fff;border-color:#fff;color:#000}
+:root .sum .more{text-decoration:underline}
+:root .warn{border-color:#fff}
+}
 </style>
 <script>document.documentElement.classList.add("js")</script>
 </head>
@@ -121,8 +130,7 @@ footer{margin-top:28px;color:var(--mute);font-size:13px}
 <script>
 (function(){
 var namen=["overzicht","o21","tweede-divisie","historie"];
-function toon(){
- var h=(location.hash||"").replace("#","");
+function toon(h){
  if(namen.indexOf(h)<0)h="overzicht";
  namen.forEach(function(n){
   var p=document.getElementById("tab-"+n),b=document.getElementById("tabbtn-"+n);
@@ -130,7 +138,19 @@ function toon(){
   if(b){if(n===h)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");}
  });
 }
-window.addEventListener("hashchange",toon);toon();
+function vanHash(){try{return (location.hash||"").replace("#","");}catch(e){return "";}}
+var links=document.querySelectorAll(".tab");
+for(var i=0;i<links.length;i++){
+ links[i].addEventListener("click",function(e){
+  if(e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;
+  e.preventDefault();
+  var n=this.getAttribute("href").slice(1);
+  toon(n);
+  try{history.replaceState(null,"","#"+n);}catch(x){}
+ });
+}
+window.addEventListener("hashchange",function(){toon(vanHash());});
+toon(vanHash());
 })();
 </script>
 </body>
