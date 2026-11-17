@@ -58,33 +58,80 @@ footer{margin-top:28px;color:var(--mute);font-size:13px}
 .badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,226,122,.8);color:#ffe27a;font-weight:600;font-size:13px}
 .up{color:var(--win);font-weight:700}.down{color:var(--loss);font-weight:700}
 .uitleg{margin:12px 0 0;font-size:13px;color:var(--mute)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px}
+.tab{flex:0 0 auto;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap}
+.tab[aria-current="page"]{background:var(--red);border-color:var(--red);color:#fff}
+.tab:focus-visible{outline:3px solid var(--redd);outline-offset:2px}
+.js .panel{display:none}.js .panel.on{display:block}
+.sums{display:grid;gap:14px;grid-template-columns:1fr;margin-top:16px}
+@media(min-width:760px){.sums{grid-template-columns:repeat(3,1fr)}}
+.sum h3{margin:0 0 6px}
+.sum .big{font-size:30px;font-weight:800;color:var(--red);line-height:1.1}
+.sum .big small{font-size:13px;font-weight:600;color:var(--mute);margin-left:6px}
+.sum .kv{margin:6px 0 0;font-size:14px}
+.sum .gap{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:var(--hi);font-weight:600;font-size:14px}
+.sum .nx{margin:10px 0 0;font-size:13px;color:var(--mute)}
+.sum .more{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--red)}
+.pill{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#ffe27a,#f5c518);color:#3a2a00;vertical-align:middle}
 .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 .confetti i{position:absolute;top:-24px;display:block;border-radius:2px;opacity:0;animation:val linear 3 forwards}
 @keyframes val{0%{opacity:1;transform:translateY(0) rotate(0)}85%{opacity:1}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){.confetti{display:none}.feest{animation:none}}
 </style>
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
 <header class="top"><div class="in"><h1>Feyenoord O21 en de Jong-teams</h1>
-<p class="sub">Laatst bijgewerkt: 17-11-2026 00:42</p></div></header>
+<p class="sub">Laatst bijgewerkt: 17-11-2026 13:14</p></div></header>
 <main>
-<div class="warn">Kon &#x27;o21&#x27; niet verversen; oude gegevens worden getoond.</div>
+<nav class="tabs" aria-label="Onderdelen van het dashboard">
+<a class="tab" id="tabbtn-overzicht" href="#overzicht" aria-current="page">Overzicht</a>
+<a class="tab" id="tabbtn-o21" href="#o21">O21</a>
+<a class="tab" id="tabbtn-tweede-divisie" href="#tweede-divisie">Tweede Divisie</a>
+<a class="tab" id="tabbtn-historie" href="#historie">Historie</a>
+</nav>
+
+<section class="panel on" id="tab-overzicht">
+<div class="sums"><div class="card sum"><h3>Feyenoord O21</h3><div class="big">1e<small>najaarscompetitie</small></div><p class="kv">27 punten uit 9 wedstrijden</p><p class="gap">11 punten voor op nr. 2 (PEC Zwolle)</p><p class="nx">Volgende: za 21 nov 12:15 · Willem II (thuis)</p><a class="more" href="#o21">Volledige stand →</a></div><div class="card sum"><h3>Jong Sparta</h3><div class="big">13e<small>Tweede Divisie</small></div><p class="kv">14 punten uit 13 wedstrijden</p><p class="gap">3 punten van het linkerrijtje</p><p class="nx">Volgende: za 21 nov 15:00 · Quick Boys (thuis)</p><a class="more" href="#tweede-divisie">Volledige stand →</a></div><div class="card sum"><h3>Jong Almere City <span class="pill">laagst geklasseerd</span></h3><div class="big">14e<small>Tweede Divisie</small></div><p class="kv">13 punten uit 13 wedstrijden</p><p class="gap">4 punten van het linkerrijtje</p><p class="nx">Volgende: za 21 nov 15:00 · IJsselmeervogels (thuis)</p><a class="more" href="#tweede-divisie">Volledige stand →</a></div></div>
 <div class="card info"><p>Om te kunnen promoveren moet er aan twee voorwaarden worden voldaan.</p><p>Ten eerste moet Feyenoord algeheel kampioen worden van de O21-competitie. Deze competitie is gesplitst in een najaarscompetitie en een voorjaarscompetitie. In de najaarscompetitie staat Feyenoord op de <b>1e</b> plek. Als een club beide competities wint is zij automatisch algeheel kampioen. Anders volgt een beslissingswedstrijd.</p><p>Ten tweede moet één van de twee Jong-ploegen in de Tweede Divisie minimaal in het rechterrijtje eindigen. Op dit moment is <b>Jong Almere City</b> het laagst geklasseerde Jong-team in de Tweede Divisie, op de <b>14e</b> plek, op <b>4 punten</b> van het linkerrijtje.</p><p>Als dat zo is, dan volgt een play off over twee wedstrijden. Wat ook nog kan is dat een Jong team 17e of 18e eindigt. Indien dat het geval is hoeft de algeheel kampioen van de O21-competitie geen beslissingswedstrijd te spelen.</p></div>
+</section>
+
+<section class="panel" id="tab-o21">
 <h2>Feyenoord O21: najaarscompetitie</h2>
 <div class="grid two">
  <div class="card scroll"><table><thead><tr><th>#</th><th>Team</th><th title='Gespeeld'>GS</th><th>DV</th><th>DT</th><th>DS</th><th>Pt</th></tr></thead><tbody><tr class="me"><td>1</td><td title="Feyenoord O21">Feyenoord</td><td>9</td><td>29</td><td>7</td><td>+22</td><td class="pt">27</td></tr><tr><td>2</td><td title="PEC Zwolle O21">PEC Zwolle</td><td>10</td><td>11</td><td>11</td><td>0</td><td class="pt">16</td></tr><tr><td>3</td><td title="SC Cambuur O21">SC Cambuur</td><td>9</td><td>21</td><td>13</td><td>+8</td><td class="pt">14</td></tr><tr><td>4</td><td title="FC Groningen O21">FC Groningen</td><td>10</td><td>20</td><td>22</td><td>-2</td><td class="pt">14</td></tr><tr><td>5</td><td title="Willem II O21">Willem II</td><td>10</td><td>15</td><td>18</td><td>-3</td><td class="pt">11</td></tr><tr><td>6</td><td title="FC Twente / Heracles Academie O21">FC Twente / Heracles Academie</td><td>10</td><td>12</td><td>20</td><td>-8</td><td class="pt">11</td></tr><tr><td>7</td><td title="De Graafschap O21">De Graafschap</td><td>10</td><td>10</td><td>17</td><td>-7</td><td class="pt">10</td></tr><tr><td>8</td><td title="Go Ahead Eagles O21">Go Ahead Eagles</td><td>10</td><td>12</td><td>22</td><td>-10</td><td class="pt">8</td></tr></tbody></table></div>
  <div class="card"><div class="lab">Vorige uitslag</div><div class="m"><div class="d">za 7 nov</div><div class="t"><b>Feyenoord O21</b> - FC Groningen O21</div><div class="s w">3-2</div></div><div class="lab">Volgende wedstrijden</div><div class="m"><div class="d">za 21 nov<br>12:15</div><div class="t"><b>Feyenoord O21</b> - Willem II O21</div><div class="s n">thuis</div></div><div class="m"><div class="d">za 28 nov<br>18:00</div><div class="t">SC Cambuur O21 - <b>Feyenoord O21</b></div><div class="s n">uit</div></div></div>
 </div>
+</section>
 
+<section class="panel" id="tab-tweede-divisie">
 <h2 class="j">Tweede Divisie: Jong Sparta en Jong Almere City</h2>
 <div class="grid two">
  <div class="card scroll"><table><thead><tr><th>#</th><th>Team</th><th title='Gespeeld'>GS</th><th>DV</th><th>DT</th><th>DS</th><th>Pt</th></tr></thead><tbody><tr><td>1</td><td title="Quick Boys">Quick Boys</td><td>13</td><td>36</td><td>10</td><td>+26</td><td class="pt">34</td></tr><tr><td>2</td><td title="IJsselmeervogels">IJsselmeervogels</td><td>13</td><td>21</td><td>11</td><td>+10</td><td class="pt">28</td></tr><tr><td>3</td><td title="Kozakken Boys">Kozakken Boys</td><td>13</td><td>33</td><td>15</td><td>+18</td><td class="pt">27</td></tr><tr><td>4</td><td title="HHC">HHC</td><td>13</td><td>24</td><td>16</td><td>+8</td><td class="pt">27</td></tr><tr><td>5</td><td title="GVVV">GVVV</td><td>13</td><td>30</td><td>23</td><td>+7</td><td class="pt">24</td></tr><tr><td>6</td><td title="De Treffers">De Treffers</td><td>13</td><td>31</td><td>19</td><td>+12</td><td class="pt">22</td></tr><tr><td>7</td><td title="Volendam (amateurs)">Volendam (am.)</td><td>13</td><td>24</td><td>22</td><td>+2</td><td class="pt">21</td></tr><tr><td>8</td><td title="Barendrecht">Barendrecht</td><td>13</td><td>22</td><td>21</td><td>+1</td><td class="pt">20</td></tr><tr><td>9</td><td title="AFC">AFC</td><td>13</td><td>22</td><td>24</td><td>-2</td><td class="pt">17</td></tr><tr><td>10</td><td title="Spakenburg">Spakenburg</td><td>13</td><td>19</td><td>21</td><td>-2</td><td class="pt">17</td></tr><tr><td>11</td><td title="HFC">HFC</td><td>13</td><td>21</td><td>23</td><td>-2</td><td class="pt">15</td></tr><tr><td>12</td><td title="Katwijk">Katwijk</td><td>13</td><td>17</td><td>26</td><td>-9</td><td class="pt">15</td></tr><tr class="jong"><td>13</td><td title="Jong Sparta">Jong Sparta</td><td>13</td><td>34</td><td>32</td><td>+2</td><td class="pt">14</td></tr><tr class="jong"><td>14</td><td title="Jong Almere City">Jong Almere City</td><td>13</td><td>24</td><td>28</td><td>-4</td><td class="pt">13</td></tr><tr><td>15</td><td title="Hoek">Hoek</td><td>13</td><td>15</td><td>23</td><td>-8</td><td class="pt">13</td></tr><tr><td>16</td><td title="Rijnsburgse Boys">Rijnsburgse Boys</td><td>13</td><td>18</td><td>33</td><td>-15</td><td class="pt">13</td></tr><tr><td>17</td><td title="Kloetinge">Kloetinge</td><td>13</td><td>19</td><td>36</td><td>-17</td><td class="pt">7</td></tr><tr><td>18</td><td title="Rohda Raalte">Rohda Raalte</td><td>13</td><td>11</td><td>38</td><td>-27</td><td class="pt">2</td></tr></tbody></table></div>
  <div style="display:grid;gap:14px;align-content:start"><div class="card"><h3>Jong Sparta</h3><div class="lab">Vorige uitslag</div><div class="m"><div class="d">za 14 nov</div><div class="t">Kozakken Boys - <b>Jong Sparta</b></div><div class="s w">3-1</div></div><div class="lab">Volgende wedstrijden</div><div class="m"><div class="d">za 21 nov<br>15:00</div><div class="t"><b>Jong Sparta</b> - Quick Boys</div><div class="s n">thuis</div></div><div class="m"><div class="d">za 28 nov<br>15:00</div><div class="t">IJsselmeervogels - <b>Jong Sparta</b></div><div class="s n">uit</div></div></div><div class="card"><h3>Jong Almere City</h3><div class="lab">Vorige uitslag</div><div class="m"><div class="d">za 14 nov</div><div class="t">Quick Boys - <b>Jong Almere City</b></div><div class="s w">2-1</div></div><div class="lab">Volgende wedstrijden</div><div class="m"><div class="d">za 21 nov<br>15:00</div><div class="t"><b>Jong Almere City</b> - IJsselmeervogels</div><div class="s n">thuis</div></div><div class="m"><div class="d">za 28 nov<br>15:00</div><div class="t">Kloetinge - <b>Jong Almere City</b></div><div class="s n">uit</div></div></div></div>
 </div>
+</section>
 
+<section class="panel" id="tab-historie">
 <h2 class="j">Jong-teams: verloop per speelronde</h2><div class="grid"><div class="card scroll"><table><thead><tr><th>Ronde</th><th>Laagste Jong-team</th><th>Pos</th><th>Pt</th><th title='Punten tot het linkerrijtje'>Afst.</th><th title='Verandering t.o.v. vorige ronde'>Δ</th></tr></thead><tbody><tr><td>13</td><td title="Jong Almere City">Jong Almere City</td><td>14</td><td>13</td><td class="pt">4</td><td>–</td></tr></tbody></table><p class="uitleg">Afst. = punten tot de nummer 9 (het linkerrijtje); &Delta; = verandering ten opzichte van de vorige ronde. Een grotere afstand (groen) is gunstig voor Feyenoord, een kleinere (rood) niet. Per speelronde wordt de laatst bekende stand bewaard.</p></div></div>
+</section>
 
 <footer>GS gespeeld, DV doelpunten voor, DT doelpunten tegen, DS doelsaldo, Pt punten. Bronnen: feyenoord.com (O21) en vi.nl (Tweede Divisie). Bij de Jong-teams is een winst rood en een verlies groen, want een verlies is gunstig voor Feyenoord. Programma's kunnen verschuiven.</footer>
 </main>
+<script>
+(function(){
+var namen=["overzicht","o21","tweede-divisie","historie"];
+function toon(){
+ var h=(location.hash||"").replace("#","");
+ if(namen.indexOf(h)<0)h="overzicht";
+ namen.forEach(function(n){
+  var p=document.getElementById("tab-"+n),b=document.getElementById("tabbtn-"+n);
+  if(p)p.classList.toggle("on",n===h);
+  if(b){if(n===h)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");}
+ });
+}
+window.addEventListener("hashchange",toon);toon();
+})();
+</script>
 </body>
 </html>

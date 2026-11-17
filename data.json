@@ -319,5 +319,15 @@
     ]
    }
   }
+ },
+ "historie": {
+  "13": {
+   "team": "Jong Almere City",
+   "pos": 14,
+   "pt": 13,
+   "gap": 4,
+   "ronde": 13,
+   "datum": "2026-11-17"
+  }
  }
 }
