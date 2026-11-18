@@ -7,6 +7,11 @@ on:
     - cron: "30 18 * * 6"
     - cron: "30 19 * * 6"
   workflow_dispatch:         # handmatig starten via het tabblad Actions (slaat de tijdcontrole over)
+    inputs:
+      plaatsen:
+        description: "Het plaatje ook op Bluesky plaatsen (standaard alleen het plaatje maken)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -54,3 +59,11 @@ jobs:
             git commit -m "Uitslagen-plaatje bijgewerkt"
             git push
           fi
+      - name: Op Bluesky plaatsen
+        if: steps.tijd.outputs.doorgaan == 'ja' && (github.event_name == 'schedule' || inputs.plaatsen)
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: >
+          python bluesky.py --plaatje docs/uitslagen.png --tekst docs/uitslagen.txt
+          --alt-intro "Plaatje met de uitslagen van Feyenoord O21 en de Jong-teams. Groen is gunstig voor Feyenoord, rood is ongunstig, geel is gelijkspel. "
