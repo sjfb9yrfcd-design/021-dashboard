@@ -1,0 +1,67 @@
+name: Programma-plaatje maken
+
+on:
+  schedule:
+    # Vrijdag 17:00 Amsterdamse tijd (zomertijd, winter). De eerste stap laat alleen de run doorgaan
+    # waarbij het in Amsterdam 17:xx is, dus er wordt maar één keer per week een plaatje gemaakt.
+    - cron: "0 15 * * 5"
+    - cron: "0 16 * * 5"
+  workflow_dispatch:         # handmatig starten via het tabblad Actions (slaat de tijdcontrole over)
+    inputs:
+      plaatsen:
+        description: "Het plaatje ook op Bluesky plaatsen (standaard alleen het plaatje maken)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
+
+jobs:
+  plaatje:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tijd controleren
+        id: tijd
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$(TZ=Europe/Amsterdam date +%H)" = "17" ]; then
+            echo "doorgaan=ja" >> "$GITHUB_OUTPUT"
+          else
+            echo "Het is niet 17:xx in Amsterdam, overslaan"
+            echo "doorgaan=nee" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.tijd.outputs.doorgaan == 'ja'
+      - uses: actions/setup-python@v5
+        if: steps.tijd.outputs.doorgaan == 'ja'
+        with:
+          python-version: "3.12"
+      - if: steps.tijd.outputs.doorgaan == 'ja'
+        run: pip install -r requirements.txt
+      - name: Standen verversen
+        if: steps.tijd.outputs.doorgaan == 'ja'
+        run: python scrape.py
+      - name: Plaatje maken
+        if: steps.tijd.outputs.doorgaan == 'ja'
+        run: python plaatje.py
+      - name: Wijzigingen opslaan
+        if: steps.tijd.outputs.doorgaan == 'ja'
+        run: |
+          git config user.name "dashboard-bot"
+          git config user.email "dashboard-bot@users.noreply.github.com"
+          git add data.json docs/index.html docs/programma.png docs/tweet.txt
+          if git diff --staged --quiet; then
+            echo "Geen wijzigingen"
+          else
+            git commit -m "Programma-plaatje bijgewerkt"
+            git push
+          fi
+      - name: Op Bluesky plaatsen
+        if: steps.tijd.outputs.doorgaan == 'ja' && (github.event_name == 'schedule' || inputs.plaatsen)
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: python bluesky.py
