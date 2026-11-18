@@ -5,8 +5,9 @@ Vereist twee omgevingsvariabelen (in GitHub: repository secrets):
   BLUESKY_HANDLE        bijvoorbeeld jouwnaam.bsky.social
   BLUESKY_APP_PASSWORD  een app-wachtwoord (niet je gewone wachtwoord)
 
-Gebruik:  python bluesky.py            -> plaatsen
+Gebruik:  python bluesky.py            -> het programma-plaatje plaatsen
           python bluesky.py --droog    -> alleen tonen wat er geplaatst zou worden
+          python bluesky.py --plaatje docs/uitslagen.png --tekst docs/uitslagen.txt --alt-intro "..."
 """
 import argparse
 import datetime as dt
@@ -48,9 +49,13 @@ def hashtag_facets(tekst):
     return out
 
 
-def alt_tekst(tekst):
+ALT_PROGRAMMA = ("Plaatje met het programma van Feyenoord O21 en de Jong-teams, met de plaats van beide teams "
+                 "in de competitie. ")
+
+
+def alt_tekst(tekst, intro=ALT_PROGRAMMA):
     regels = [r for r in tekst.splitlines() if r.strip() and not r.startswith("#") and not r.endswith(":")]
-    return "Plaatje met het programma van Feyenoord O21 en de Jong-teams, met de plaats van beide teams in de competitie. " + "; ".join(regels)
+    return intro + "; ".join(regels)
 
 
 def hoofdtekst(pad):
@@ -82,12 +87,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--plaatje", default=str(ROOT / "docs" / "programma.png"))
     ap.add_argument("--tekst", default=str(ROOT / "docs" / "tweet.txt"))
+    ap.add_argument("--alt-intro", default=ALT_PROGRAMMA, help="begin van de alt-tekst van het plaatje")
     ap.add_argument("--droog", action="store_true", help="niets plaatsen, alleen tonen")
     a = ap.parse_args()
 
     tekst = hoofdtekst(a.tekst)
     data, mime = afbeelding(a.plaatje)
-    alt = alt_tekst(tekst)
+    alt = alt_tekst(tekst, a.alt_intro)
     if a.droog:
         print(f"--- tekst ({len(tekst)} tekens) ---\n{tekst}\n--- alt-tekst ---\n{alt}\n--- afbeelding: {len(data)} bytes, {mime}")
         print("--- hashtags:", [f["features"][0]["tag"] for f in hashtag_facets(tekst)])
