@@ -21,6 +21,10 @@ on:
 permissions:
   contents: write
 
+concurrency:               # runs om beurten, zodat ze elkaars wijzigingen niet in de weg zitten
+  group: dashboard
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
