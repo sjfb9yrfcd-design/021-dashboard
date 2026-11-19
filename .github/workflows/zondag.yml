@@ -1,0 +1,104 @@
+name: Zondag-plaatje en Bluesky
+
+on:
+  schedule:
+    # Zondag 10:00 Amsterdamse tijd: plaatje maken. Zondag 11:00: op Bluesky plaatsen.
+    # Drie momenten in UTC, zodat het zowel in zomer- als wintertijd klopt. De eerste stap kijkt
+    # welk uur het in Amsterdam is en bepaalt of er gemaakt, geplaatst of niets gedaan wordt.
+    - cron: "0 8 * * 0"
+    - cron: "0 9 * * 0"
+    - cron: "0 10 * * 0"
+  workflow_dispatch:         # handmatig starten via het tabblad Actions
+    inputs:
+      actie:
+        description: "Wat moet er gebeuren? (plaatsen werkt alleen als het plaatje van vandaag al gemaakt is)"
+        type: choice
+        options:
+          - maken
+          - plaatsen
+          - beide
+        default: maken
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
+
+jobs:
+  zondag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bepalen wat er moet gebeuren
+        id: wat
+        run: |
+          uur="$(TZ=Europe/Amsterdam date +%H)"
+          maken=nee
+          plaatsen=nee
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            case "${{ inputs.actie }}" in
+              maken) maken=ja ;;
+              plaatsen) plaatsen=ja ;;
+              beide) maken=ja; plaatsen=ja ;;
+            esac
+          elif [ "$uur" = "10" ]; then
+            maken=ja
+          elif [ "$uur" = "11" ]; then
+            plaatsen=ja
+          else
+            echo "Het is $uur:xx in Amsterdam, overslaan"
+          fi
+          echo "maken=$maken" >> "$GITHUB_OUTPUT"
+          echo "plaatsen=$plaatsen" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.wat.outputs.maken == 'ja' || steps.wat.outputs.plaatsen == 'ja'
+
+      - uses: actions/setup-python@v5
+        if: steps.wat.outputs.maken == 'ja' || steps.wat.outputs.plaatsen == 'ja'
+        with:
+          python-version: "3.12"
+
+      - name: Pakketten installeren
+        if: steps.wat.outputs.maken == 'ja' || steps.wat.outputs.plaatsen == 'ja'
+        run: pip install -r requirements.txt
+
+      - name: Standen verversen
+        if: steps.wat.outputs.maken == 'ja'
+        run: python scrape.py
+
+      - name: Plaatje en tekst maken
+        if: steps.wat.outputs.maken == 'ja'
+        run: python zondag.py
+
+      - name: Wijzigingen opslaan
+        if: steps.wat.outputs.maken == 'ja'
+        run: |
+          git config user.name "dashboard-bot"
+          git config user.email "dashboard-bot@users.noreply.github.com"
+          git add data.json docs/zondag.status
+          for f in docs/zondag.png docs/zondag.txt docs/zondag.alt.txt; do
+            [ -f "$f" ] && git add "$f"
+          done
+          if git diff --staged --quiet; then
+            echo "Geen wijzigingen"
+          else
+            git commit -m "Zondag-plaatje bijgewerkt"
+            git pull --rebase
+            git push
+          fi
+
+      - name: Op Bluesky plaatsen
+        if: steps.wat.outputs.plaatsen == 'ja'
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: |
+          vandaag="$(TZ=Europe/Amsterdam date +%F)"
+          if grep -q "^$vandaag ja$" docs/zondag.status; then
+            python bluesky.py --plaatje docs/zondag.png --tekst docs/zondag.txt \
+              --alt-intro "$(cat docs/zondag.alt.txt) "
+          else
+            echo "Er is vandaag geen nieuw plaatje gemaakt, dus niets geplaatst"
+          fi
