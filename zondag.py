@@ -136,8 +136,12 @@ def maak(a, vandaag):
     x0, breed = 96, W - 2 * 96
     d.text((x0, 100), "FEYENOORD O21 NAAR DE TWEEDE DIVISIE", font=font(24, True), fill=RED, anchor="lm")
     ftitel = font(50, True)
-    for i, regel in enumerate(wrap(d, "Een Jong-team eindigt in de Tweede Divisie op plek 10 of lager", ftitel, breed)):
-        d.text((x0, 165 + i * 58), regel, font=ftitel, fill=INK, anchor="lm")
+    titel = wrap(d, "Hoe staat het er in de Tweede Divisie voor?", ftitel, breed)
+    for i, regel in enumerate(titel):                        # een regel komt iets lager, zodat het gelijk verdeeld blijft
+        d.text((x0, 150 + (2 - len(titel)) * 29 + i * 58), regel, font=ftitel, fill=INK, anchor="lm")
+    y_zin = 150 + (2 - len(titel)) * 29 + (len(titel) - 1) * 58 + 54
+    d.text((x0, y_zin), "Eindigt een Jong-team op plek 10 of lager, dan kan Feyenoord O21 promoveren.",
+           font=font(30), fill=MUTE, anchor="lm")
 
     # de balk met de plekken 1 t/m 18
     gat = 4
