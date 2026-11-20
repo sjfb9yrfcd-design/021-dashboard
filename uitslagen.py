@@ -5,6 +5,10 @@ nieuwe afstand tot het linkerrijtje van de Tweede Divisie. Leest data.json (zoal
 Kleuren: groen = gunstig voor Feyenoord (winst van O21, verlies van een Jong-team), rood = ongunstig,
 geel = gelijkspel.
 
+De afstand wordt gerekend tot de 8e club zonder Jong-team (de nummer 8, of de nummer 9 als een Jong-team al in
+de top 8 staat): Feyenoord heeft genoeg aan één Jong-team in het rechterrijtje, dus beide Jong-teams moeten in het
+linkerrijtje eindigen om Feyenoord tegen te houden.
+
 Gebruik:  python uitslagen.py                      -> docs/uitslagen.png en docs/uitslagen.txt
           python uitslagen.py --vanaf 2026-11-21   -> alsof het die datum is (handig om te testen)
 """
@@ -42,12 +46,19 @@ def beoordeel(m, club, sectie):
 
 
 def afstand(td, naam):
-    """(positie, punten tot de nummer 9) van een team in de Tweede Divisie; punten is None in het linkerrijtje."""
+    """(positie, punten tot de referentie) van een Jong-team in de Tweede Divisie; punten is None in het linkerrijtje.
+
+    De referentie is de 8e club zonder Jong-team: Feyenoord hoeft maar één Jong-team in het rechterrijtje te hebben,
+    dus beide Jong-teams moeten in het linkerrijtje (plek 1 t/m 9) eindigen om Feyenoord tegen te houden. Staat er
+    nog geen Jong-team in de top 8, dan is dat de nummer 8; staat er al één in de top 8, dan de nummer 9."""
+    jong = {n for s, n, _ in TEAMS if s == "td"}
     row = next((r for r in td if r["team"] == naam), None)
-    nr9 = next((r for r in td if r["pos"] == 9), None)
-    if not row or not nr9:
+    rest = sorted((r for r in td if r["team"] not in jong), key=lambda r: r["pos"])
+    index = 9 - len(jong)
+    if not row or len(rest) <= index:
         return None
-    return row["pos"], (nr9["pt"] - row["pt"] if row["pos"] > 9 else None)
+    ref = rest[index]
+    return row["pos"], (max(ref["pt"] - row["pt"], 0) if row["pos"] > 9 else None)
 
 
 def punten(n):
