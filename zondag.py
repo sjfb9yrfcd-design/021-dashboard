@@ -6,6 +6,7 @@ Leest data.json (door scrape.py ververst) en maakt, net als uitslagen.py met Pil
   docs/zondag.txt      de Bluesky-tekst
   docs/zondag.alt.txt  de alt-tekst voor het plaatje
   docs/zondag.status   "<datum> ja" of "<datum> nee": of er vandaag iets te plaatsen valt
+  afstanden.json       de afstand per speelronde (naast data.json), om de volgende week mee te vergelijken
 
 Gebruik:  python zondag.py
 Testen:   python zondag.py --vandaag 2026-11-22 --forceer --uit /tmp/uit
@@ -49,27 +50,30 @@ def analyseer(data):
         raise SystemExit(f"Verwacht {AANTAL_PLEKKEN} teams in de Tweede Divisie, gevonden: {len(td)}")
     jongnamen = list(data["td"]["matches"].keys())          # Jong Sparta, Jong Almere City
     per_pos = {r["pos"]: r for r in td}
-    negende = per_pos[LAATSTE_LINKS]
     zeventiende = per_pos[EERSTE_AUTOMATISCH]
     jong = sorted((r for r in td if r["team"] in jongnamen), key=lambda r: r["pos"])
     laagste = jong[-1]                                      # laagst geplaatste Jong-team
+    # Feyenoord heeft genoeg aan één Jong-team in het rechterrijtje. Dat gebeurt alleen niet als álle Jong-teams in
+    # het linkerrijtje eindigen. Het laagste Jong-team moet dan boven de 8e club zonder Jong-team komen
+    # (9 plekken min 2 Jong-teams = 7 plekken voor de rest). Staat een Jong-team in de top 8, dan is dat de nummer 9.
+    zonder_jong = sorted((r for r in td if r["team"] not in jongnamen), key=lambda r: r["pos"])
+    referentie = zonder_jong[LAATSTE_LINKS - len(jong)]
     laatste = [dt.date.fromisoformat(data["td"]["matches"][n]["last"]["date"])
                for n in jongnamen if data["td"]["matches"][n].get("last")]
     return {
-        "negende": negende,
+        "referentie": referentie,
         "zeventiende": zeventiende,
         "jong": jong,
         "laagste": laagste,
-        "gap": negende["pt"] - laagste["pt"],
+        "gap": referentie["pt"] - laagste["pt"],
         "ronde": laagste["gs"],
         "laatste_datum": max(laatste) if laatste else None,
     }
 
 
-def vorige_meting(data, ronde):
-    hist = data.get("historie", {})
-    eerder = [int(k) for k in hist if str(k).isdigit() and int(k) < ronde]
-    return hist[str(max(eerder))] if eerder else None
+def vorige_afstand(afstanden, ronde):
+    eerder = [int(k) for k in afstanden if str(k).isdigit() and int(k) < ronde]
+    return afstanden[str(max(eerder))]["afstand"] if eerder else None
 
 
 def weekendtekst(gap, vorig_gap, laagste_pos):
@@ -86,7 +90,7 @@ def weekendtekst(gap, vorig_gap, laagste_pos):
             oordeel, wat = "neutraal", "hetzelfde gebleven"
         tekst = f"Het was een {oordeel} weekend! {basis} is namelijk {wat}."
     if laagste_pos <= LAATSTE_LINKS:
-        tekst += " Let op: het laagst geplaatste Jong-team staat nu in het linkerrijtje."
+        tekst += " Let op: beide Jong-teams staan nu in het linkerrijtje."
     return tekst
 
 
@@ -95,8 +99,9 @@ def alttekst(a):
     for r in a["jong"]:
         delen.append(f"{r['team']} staat {r['pos']}e met {punten(r['pt'])}. ")
     jongteams = [r["team"] for r in a["jong"]]
-    if a["negende"]["team"] not in jongteams:
-        delen.append(f"Nummer 9 is {a['negende']['team']} met {punten(a['negende']['pt'])}. ")
+    ref = a["referentie"]
+    delen.append(f"Referentie is {ref['team']} op plek {ref['pos']} met {punten(ref['pt'])}: beide Jong-teams moeten "
+                 "in het linkerrijtje eindigen om Feyenoord O21 tegen te houden. ")
     if a["zeventiende"]["team"] not in jongteams:
         delen.append(f"Nummer 17 is {a['zeventiende']['team']} met {punten(a['zeventiende']['pt'])}. ")
     delen.append("Een Jong-team op plek 10 tot en met 16 betekent een play-off voor Feyenoord O21, "
@@ -148,7 +153,7 @@ def maak(a, vandaag):
     cw = (breed - (AANTAL_PLEKKEN - 1) * gat) / AANTAL_PLEKKEN
     yb, hb = 330, 80
     jongposities = {r["pos"] for r in a["jong"]}
-    referenties = {a["negende"]["pos"]: MUTE, a["zeventiende"]["pos"]: "#FFFFFF"}   # ringkleur per referentieplek
+    referenties = {a["referentie"]["pos"]: MUTE, a["zeventiende"]["pos"]: "#FFFFFF"}   # ringkleur per referentieplek
 
     def celx(pos):
         return x0 + (pos - 1) * (cw + gat)
@@ -187,7 +192,7 @@ def maak(a, vandaag):
     # blokjes met pijltjes onder de balk
     items = [{"pos": r["pos"], "titel": r["team"], "sub": f"{r['pos']}e plek · {punten(r['pt'])}", "stijl": "jong"}
              for r in a["jong"]]
-    for ref in (a["negende"], a["zeventiende"]):            # nummer 9 en nummer 17 als referentie
+    for ref in (a["referentie"], a["zeventiende"]):         # referentieplek en nummer 17
         if ref["team"] not in [r["team"] for r in a["jong"]]:
             items.append({"pos": ref["pos"], "titel": ref["team"], "sub": f"{ref['pos']}e plek · {punten(ref['pt'])}", "stijl": "negen"})
     ft, fs = font(34, True), font(26)
@@ -232,8 +237,10 @@ def maak(a, vandaag):
         for k, regel in enumerate(regels):
             d.text((bx + 28, top + k * 40), regel, font=fuitleg, fill=kleur, anchor="lm")
 
+    ref = a["referentie"]
     voet = (f"Stand Tweede Divisie na {a['ronde']} wedstrijden, bron vi.nl, {datum_nl(vandaag)}. "
-            "Plek 9 is de laatste plek van het linkerrijtje, plek 17 de eerste met directe promotie")
+            f"Beide Jong-teams moeten in het linkerrijtje eindigen om Feyenoord O21 tegen te houden, "
+            f"daarom telt de afstand tot de {ref['pos']}e plek ({ref['team']}).")
     fvoet = font(22)
     for i, regel in enumerate(wrap(d, voet, fvoet, breed)):
         d.text((x0, 840 + i * 30), regel, font=fvoet, fill=MUTE, anchor="lm")
@@ -263,8 +270,9 @@ def main():
         print(f"Laatste Jong-wedstrijd was {dagen} dagen geleden: geen nieuw plaatje.")
         return
 
-    vorig = vorige_meting(data, a["ronde"])
-    tekst = weekendtekst(a["gap"], vorig["gap"] if vorig else None, a["laagste"]["pos"])
+    pad_afst = pad_data.with_name("afstanden.json")         # eigen geschiedenis, los van data.json
+    afstanden = json.loads(pad_afst.read_text(encoding="utf-8")) if pad_afst.exists() else {}
+    tekst = weekendtekst(a["gap"], vorige_afstand(afstanden, a["ronde"]), a["laagste"]["pos"])
 
     img = maak(a, vandaag)
     img.save(uit / "zondag.png", optimize=True)
@@ -272,11 +280,11 @@ def main():
     (uit / "zondag.alt.txt").write_text(alttekst(a) + "\n", encoding="utf-8")
     (uit / "zondag.status").write_text(f"{vandaag.isoformat()} ja\n", encoding="utf-8")
 
-    hist = data.setdefault("historie", {})                  # zelfde vorm als scrape.py al gebruikt
-    if str(a["ronde"]) not in hist:
-        hist[str(a["ronde"])] = {"team": a["laagste"]["team"], "pos": a["laagste"]["pos"], "pt": a["laagste"]["pt"],
-                                 "gap": a["gap"], "ronde": a["ronde"], "datum": vandaag.isoformat()}
-        pad_data.write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    ref = a["referentie"]
+    afstanden[str(a["ronde"])] = {"afstand": a["gap"], "team": a["laagste"]["team"], "pos": a["laagste"]["pos"],
+                                  "pt": a["laagste"]["pt"], "referentie": ref["team"], "ref_pos": ref["pos"],
+                                  "ref_pt": ref["pt"], "datum": vandaag.isoformat()}
+    pad_afst.write_text(json.dumps(afstanden, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print(tekst)
 
