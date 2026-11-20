@@ -4,8 +4,8 @@ on:
   schedule:
     # Zaterdag 20:30 Amsterdamse tijd (zomertijd, winter). De eerste stap laat alleen de run doorgaan
     # waarbij het in Amsterdam 20:xx is, dus er wordt maar één keer per week een plaatje gemaakt.
-    - cron: "30 18 * * 6"
-    - cron: "30 19 * * 6"
+    - cron: "36 18 * * 6"
+    - cron: "37 19 * * 6"
   workflow_dispatch:         # handmatig starten via het tabblad Actions (slaat de tijdcontrole over)
     inputs:
       plaatsen:
