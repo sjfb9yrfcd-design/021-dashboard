@@ -361,14 +361,28 @@ def kampioen_dagen(data, today=None):
     return max((today - dt.date.fromisoformat(sinds)).days, 0)
 
 
+def jong_referentie(td):
+    """De club waarop het laagst geklasseerde Jong-team moet inlopen: de 8e club zonder Jong-team.
+
+    Feyenoord heeft genoeg aan \u00e9\u00e9n Jong-team in het rechterrijtje. Dat lukt alleen niet als allebei de Jong-teams
+    in het linkerrijtje (plek 1 t/m 9) eindigen; er blijven dan 7 plekken over voor de overige clubs. Zolang er nog
+    geen Jong-team in de top 8 staat is dit dus de nummer 8; staat er al \u00e9\u00e9n in de top 8, dan is het de nummer 9."""
+    namen = SECTIONS["td"]["highlight"]
+    jong = [r for r in td if r["team"] in namen]
+    rest = sorted((r for r in td if r["team"] not in namen), key=lambda r: r["pos"])
+    index = 9 - len(jong)
+    return rest[index] if jong and len(rest) > index else None
+
+
 def jong_status(td):
-    """Laagst geklasseerde Jong-team en zijn afstand (in punten) tot de nummer 9, de onderkant van het linkerrijtje."""
+    """Laagst geklasseerde Jong-team en zijn afstand (in punten) tot de referentie (zie jong_referentie)."""
     jong = [r for r in td if r["team"] in SECTIONS["td"]["highlight"]]
-    nr9 = next((r for r in td if r["pos"] == 9), None)
-    if not jong or not nr9:
+    ref = jong_referentie(td)
+    if not jong or not ref:
         return None
     low = max(jong, key=lambda r: r["pos"])
-    return {"team": low["team"], "pos": low["pos"], "pt": low["pt"], "gap": nr9["pt"] - low["pt"]}
+    return {"team": low["team"], "pos": low["pos"], "pt": low["pt"], "gap": ref["pt"] - low["pt"],
+            "referentie": ref["team"], "ref_pos": ref["pos"], "ref_pt": ref["pt"]}
 
 
 def update_historie(data, today):
@@ -409,12 +423,15 @@ def verloop_svg(hist):
 
 
 def jong_afstand_tekst(td, row):
-    """Afstand van een Jong-team tot het linkerrijtje (de nummers 1 t/m 9), als korte tekst."""
-    nr9 = next((r for r in td if r["pos"] == 9), None)
+    """Afstand van een Jong-team tot het linkerrijtje, als korte tekst (gerekend tot jong_referentie)."""
+    ref = jong_referentie(td)
     nr10 = next((r for r in td if r["pos"] == 10), None)
-    if row["pos"] > 9 and nr9:
-        gap = nr9["pt"] - row["pt"]
-        return "gelijk met de nummer 9 van het linkerrijtje" if gap == 0 else f"{punten(gap)} van het linkerrijtje"
+    if row["pos"] > 9 and ref:
+        gap = max(ref["pt"] - row["pt"], 0)
+        naam = esc(SHORT_NAMES.get(ref["team"], ref["team"]))
+        if gap == 0:
+            return f"gelijk met het linkerrijtje (nr. {ref['pos']}: {naam})"
+        return f"{punten(gap)} van het linkerrijtje (nr. {ref['pos']}: {naam})"
     if nr10:
         return f"in het linkerrijtje, {punten(max(row['pt'] - nr10['pt'], 0))} boven het rechterrijtje"
     return "in het linkerrijtje"
@@ -488,15 +505,17 @@ def historie_html(data):
             delta = ("0" if d == 0 else f'<span class="up">+{d}</span>' if d > 0
                      else f'<span class="down">\u2212{-d}</span>')
         afstand = "links" if e["pos"] <= 9 else str(e["gap"])
+        wie = f' title="Tot nr. {e["ref_pos"]}: {esc(e["referentie"])} ({e["ref_pt"]} pt)"' if e.get("referentie") else ""
         rows.append(f'<tr><td>{e["ronde"]}</td><td title="{esc(e["team"])}">{esc(e["team"])}</td>'
-                    f'<td>{e["pos"]}</td><td>{e["pt"]}</td><td class="pt">{afstand}</td><td>{delta}</td></tr>')
+                    f'<td>{e["pos"]}</td><td>{e["pt"]}</td><td class="pt"{wie}>{afstand}</td><td>{delta}</td></tr>')
         prev = e
     tabel = ("<table><thead><tr><th>Ronde</th><th>Laagste Jong-team</th><th>Pos</th><th>Pt</th>"
              "<th title='Punten tot het linkerrijtje'>Afst.</th><th title='Verandering t.o.v. vorige ronde'>\u0394</th>"
              "</tr></thead><tbody>" + "".join(reversed(rows)) + "</tbody></table>")
     grafiek = verloop_svg(hist) if len(hist) >= 3 else ""
-    uitleg = ('<p class="uitleg">Afst. = punten tot de nummer 9 (het linkerrijtje); &Delta; = verandering ten opzichte '
-              'van de vorige ronde. Een grotere afstand (groen) is gunstig voor Feyenoord, een kleinere (rood) niet. '
+    uitleg = ('<p class="uitleg">Afst. = punten van het laagste Jong-team tot de 8e club zonder Jong-team (de nummer 8, '
+              'of de nummer 9 als een Jong-team al in de top 8 staat), want beide Jong-teams moeten in het linkerrijtje '
+              'eindigen om Feyenoord tegen te houden; &Delta; = verandering ten opzichte van de vorige ronde. Een grotere afstand (groen) is gunstig voor Feyenoord, een kleinere (rood) niet. '
               'Per speelronde wordt de laatst bekende stand bewaard.</p>')
     return ('<h2 class="j">Jong-teams: verloop per speelronde</h2><div class="grid"><div class="card scroll">'
             + tabel + grafiek + uitleg + '</div></div>')
@@ -535,18 +554,21 @@ def promotie_html(data):
     jong = [r for r in td if r["team"] in SECTIONS["td"]["highlight"]]
     if jong:
         low = max(jong, key=lambda r: r["pos"])
-        nr9 = next((r for r in td if r["pos"] == 9), None)
+        ref = jong_referentie(td)
         nr10 = next((r for r in td if r["pos"] == 10), None)
-        if low["pos"] > 9 and nr9:
-            gap = nr9["pt"] - low["pt"]
-            afstand = ("op gelijke stand met de nummer 9 van het linkerrijtje" if gap == 0
-                       else f'op <b>{punten(gap)}</b> van het linkerrijtje')
+        if low["pos"] > 9 and ref:
+            gap = max(ref["pt"] - low["pt"], 0)
+            naam = esc(SHORT_NAMES.get(ref["team"], ref["team"]))
+            afstand = (f'op gelijke stand met het linkerrijtje (nr. {ref["pos"]}: {naam})' if gap == 0
+                       else f'op <b>{punten(gap)}</b> van het linkerrijtje (nr. {ref["pos"]}: {naam})')
         elif nr10:
             afstand = f'nog in het linkerrijtje, <b>{punten(low["pt"] - nr10["pt"])}</b> boven het rechterrijtje'
         else:
             afstand = "in het linkerrijtje"
         tweede = (f'Op dit moment is <b>{esc(low["team"])}</b> het laagst geklasseerde Jong-team in de '
-                  f'Tweede Divisie, op de <b>{low["pos"]}e</b> plek, {afstand}.')
+                  f'Tweede Divisie, op de <b>{low["pos"]}e</b> plek, {afstand}. Omdat Feyenoord maar \u00e9\u00e9n Jong-team in het '
+                  'rechterrijtje nodig heeft, telt de afstand tot de 8e club zonder Jong-team (de nummer 8, of de '
+                  'nummer 9 als een Jong-team al in de top 8 staat).')
     else:
         tweede = "De positie van de Jong-teams is op dit moment niet bekend."
 
