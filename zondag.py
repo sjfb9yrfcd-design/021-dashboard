@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Zondag-plaatje (1600x900): stand van de Jong-teams ten opzichte van het linkerrijtje.
+"""Zondag-plaatje (1600x960): stand van de Jong-teams ten opzichte van het linkerrijtje.
 
 Leest data.json (door scrape.py ververst) en maakt, net als uitslagen.py met Pillow en de hulpjes uit plaatje.py:
   docs/zondag.png      het plaatje (het onderste deel van de promotie-infographic)
@@ -19,14 +19,16 @@ from zoneinfo import ZoneInfo
 
 from PIL import Image, ImageDraw
 
-from plaatje import ROOT, W, H, INK, MUTE, LINE, RED, REDD, font
+from plaatje import ROOT, W, INK, MUTE, LINE, RED, REDD, font
 
 MAANDEN = ["januari", "februari", "maart", "april", "mei", "juni", "juli",
            "augustus", "september", "oktober", "november", "december"]
 AANTAL_PLEKKEN = 18      # Tweede Divisie
 LAATSTE_LINKS = 9        # plek 1 t/m 9 = linkerrijtje
 LAATSTE_PLAYOFF = 16     # plek 10 t/m 16 = play-off, 17 en 18 = automatisch
+EERSTE_AUTOMATISCH = 17  # eerste plek met directe promotie
 MAX_DAGEN_GELEDEN = 3    # laatste Jong-wedstrijd moet dit weekend zijn geweest
+HOOGTE = 960             # iets hoger dan de andere plaatjes, voor de pijltjes naar de blokjes
 
 ACHTERGROND, ROZE, GRIJS = "#FBF7F6", "#FDE3E5", "#F4EDED"
 
@@ -48,12 +50,14 @@ def analyseer(data):
     jongnamen = list(data["td"]["matches"].keys())          # Jong Sparta, Jong Almere City
     per_pos = {r["pos"]: r for r in td}
     negende = per_pos[LAATSTE_LINKS]
+    zeventiende = per_pos[EERSTE_AUTOMATISCH]
     jong = sorted((r for r in td if r["team"] in jongnamen), key=lambda r: r["pos"])
     laagste = jong[-1]                                      # laagst geplaatste Jong-team
     laatste = [dt.date.fromisoformat(data["td"]["matches"][n]["last"]["date"])
                for n in jongnamen if data["td"]["matches"][n].get("last")]
     return {
         "negende": negende,
+        "zeventiende": zeventiende,
         "jong": jong,
         "laagste": laagste,
         "gap": negende["pt"] - laagste["pt"],
@@ -90,8 +94,11 @@ def alttekst(a):
     delen = ["Plaatje met de stand van de Tweede Divisie, plek 1 tot en met 18. "]
     for r in a["jong"]:
         delen.append(f"{r['team']} staat {r['pos']}e met {punten(r['pt'])}. ")
-    if a["negende"]["team"] not in [r["team"] for r in a["jong"]]:
+    jongteams = [r["team"] for r in a["jong"]]
+    if a["negende"]["team"] not in jongteams:
         delen.append(f"Nummer 9 is {a['negende']['team']} met {punten(a['negende']['pt'])}. ")
+    if a["zeventiende"]["team"] not in jongteams:
+        delen.append(f"Nummer 17 is {a['zeventiende']['team']} met {punten(a['zeventiende']['pt'])}. ")
     delen.append("Een Jong-team op plek 10 tot en met 16 betekent een play-off voor Feyenoord O21, "
                  "plek 17 of 18 betekent automatische promotie. ")
     return "".join(delen)
@@ -122,9 +129,9 @@ def pijl(d, x1, y1, x2, y2, kleur, dikte=5, kop=24):
 
 
 def maak(a, vandaag):
-    img = Image.new("RGB", (W, H), ACHTERGROND)
+    img = Image.new("RGB", (W, HOOGTE), ACHTERGROND)
     d = ImageDraw.Draw(img)
-    d.rounded_rectangle((40, 40, W - 40, H - 40), radius=28, fill="#FFFFFF", outline=LINE, width=3)
+    d.rounded_rectangle((40, 40, W - 40, HOOGTE - 40), radius=28, fill="#FFFFFF", outline=LINE, width=3)
 
     x0, breed = 96, W - 2 * 96
     d.text((x0, 100), "FEYENOORD O21 NAAR DE TWEEDE DIVISIE", font=font(24, True), fill=RED, anchor="lm")
@@ -137,7 +144,7 @@ def maak(a, vandaag):
     cw = (breed - (AANTAL_PLEKKEN - 1) * gat) / AANTAL_PLEKKEN
     yb, hb = 330, 80
     jongposities = {r["pos"] for r in a["jong"]}
-    negende_pos = a["negende"]["pos"]
+    referenties = {a["negende"]["pos"]: MUTE, a["zeventiende"]["pos"]: "#FFFFFF"}   # ringkleur per referentieplek
 
     def celx(pos):
         return x0 + (pos - 1) * (cw + gat)
@@ -164,27 +171,27 @@ def maak(a, vandaag):
             d.rectangle(helft, fill=bg)
         else:
             d.rectangle(vak, fill=bg)
-        gemarkeerd = pos in jongposities or pos == negende_pos
+        gemarkeerd = pos in jongposities or pos in referenties
         if pos in jongposities:
             d.rectangle((vak[0] + 3, yb + 3, vak[2] - 3, yb + hb - 3), outline=INK, width=6)
             kleur = INK if pos <= LAATSTE_PLAYOFF else "#FFFFFF"
-        elif pos == negende_pos:
-            d.rectangle((vak[0] + 3, yb + 3, vak[2] - 3, yb + hb - 3), outline=MUTE, width=6)
-            kleur = INK
+        elif pos in referenties:
+            d.rectangle((vak[0] + 3, yb + 3, vak[2] - 3, yb + hb - 3), outline=referenties[pos], width=6)
+            kleur = INK if pos <= LAATSTE_PLAYOFF else "#FFFFFF"
         d.text((x + cw / 2, yb + hb / 2), str(pos), font=fcelb if gemarkeerd else fcel, fill=kleur, anchor="mm")
 
     # blokjes met pijltjes onder de balk
     items = [{"pos": r["pos"], "titel": r["team"], "sub": f"{r['pos']}e plek · {punten(r['pt'])}", "stijl": "jong"}
              for r in a["jong"]]
-    if a["negende"]["team"] not in [r["team"] for r in a["jong"]]:
-        n = a["negende"]
-        items.append({"pos": n["pos"], "titel": n["team"], "sub": f"{n['pos']}e plek · {punten(n['pt'])}", "stijl": "negen"})
+    for ref in (a["negende"], a["zeventiende"]):            # nummer 9 en nummer 17 als referentie
+        if ref["team"] not in [r["team"] for r in a["jong"]]:
+            items.append({"pos": ref["pos"], "titel": ref["team"], "sub": f"{ref['pos']}e plek · {punten(ref['pt'])}", "stijl": "negen"})
     ft, fs = font(34, True), font(26)
     for it in items:
         it["mid"] = celx(it["pos"]) + cw / 2
-        it["w"] = max(300, d.textlength(it["titel"], font=ft) + 64, d.textlength(it["sub"], font=fs) + 64)
+        it["w"] = max(250, d.textlength(it["titel"], font=ft) + 48, d.textlength(it["sub"], font=fs) + 48)
     items.sort(key=lambda i: i["mid"])
-    tussen, einde = 24, x0 - 24
+    tussen, einde = 16, x0 - 16
     for it in items:
         it["x"] = max(it["mid"] - it["w"] / 2, einde + tussen)
         einde = it["x"] + it["w"]
@@ -194,7 +201,7 @@ def maak(a, vandaag):
             items[i]["x"] = min(items[i]["x"], items[i + 1]["x"] - tussen - items[i]["w"])
     for it in items:
         it["x"] = max(it["x"], x0)
-        ylab = 490
+        ylab = 540
         anker = min(max(it["mid"], it["x"] + 30), it["x"] + it["w"] - 30)
         pijl(d, anker, ylab, it["mid"], yb + hb + 12, INK)
         box = (round(it["x"]), ylab, round(it["x"] + it["w"]), ylab + 104)
@@ -209,7 +216,7 @@ def maak(a, vandaag):
         d.text((cx, ylab + 76), it["sub"], font=fs, fill=tkleur, anchor="mm")
 
     # wat betekent het
-    ybox, hbox, bw = 640, 110, (breed - 24) / 2
+    ybox, hbox, bw = 690, 110, (breed - 24) / 2
     fuitleg = font(30, True)
     for i, (bg, kleur, tekst) in enumerate([
             (ROZE, REDD, "Plek 10 t/m 16: play-off over twee wedstrijden"),
@@ -222,10 +229,10 @@ def maak(a, vandaag):
             d.text((bx + 28, top + k * 40), regel, font=fuitleg, fill=kleur, anchor="lm")
 
     voet = (f"Stand Tweede Divisie na {a['ronde']} wedstrijden, bron vi.nl, {datum_nl(vandaag)}. "
-            "Plek 9 is de laatste plek van het linkerrijtje")
+            "Plek 9 is de laatste plek van het linkerrijtje, plek 17 de eerste met directe promotie")
     fvoet = font(22)
     for i, regel in enumerate(wrap(d, voet, fvoet, breed)):
-        d.text((x0, 790 + i * 30), regel, font=fvoet, fill=MUTE, anchor="lm")
+        d.text((x0, 840 + i * 30), regel, font=fvoet, fill=MUTE, anchor="lm")
     return img
 
 
