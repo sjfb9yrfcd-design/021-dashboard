@@ -5,9 +5,9 @@ on:
     # Zondag 10:00 Amsterdamse tijd: plaatje maken. Zondag 11:00: op Bluesky plaatsen.
     # Drie momenten in UTC, zodat het zowel in zomer- als wintertijd klopt. De eerste stap kijkt
     # welk uur het in Amsterdam is en bepaalt of er gemaakt, geplaatst of niets gedaan wordt.
-    - cron: "0 8 * * 0"
-    - cron: "0 9 * * 0"
-    - cron: "0 10 * * 0"
+    - cron: "6 8 * * 0"
+    - cron: "7 9 * * 0"
+    - cron: "6 10 * * 0"
   workflow_dispatch:         # handmatig starten via het tabblad Actions
     inputs:
       actie:
