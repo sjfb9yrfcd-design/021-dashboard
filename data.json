@@ -330,7 +330,11 @@
    "ref_pos": 8,
    "ref_pt": 20,
    "ronde": 13,
-   "datum": "2026-11-20"
+   "datum": "2026-11-21"
   }
+ },
+ "najaarskampioen": {
+  "sinds": "2026-11-21",
+  "handmatig": true
  }
 }
