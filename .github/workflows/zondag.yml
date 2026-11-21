@@ -81,7 +81,7 @@ jobs:
         run: |
           git config user.name "dashboard-bot"
           git config user.email "dashboard-bot@users.noreply.github.com"
-          git add data.json docs/zondag.status
+          git add data.json docs/index.html docs/zondag.status
           for f in docs/zondag.png docs/zondag.txt docs/zondag.alt.txt; do
             [ -f "$f" ] && git add "$f"
           done
