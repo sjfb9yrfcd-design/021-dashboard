@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Maakt een plaatje (1600x900) met de uitslagen van Feyenoord O21 en de Jong-teams, plus per Jong-team de
-nieuwe afstand tot het linkerrijtje van de Tweede Divisie. Leest data.json (zoals scrape.py die bewaart).
+"""Maakt een plaatje (1600x900) met de uitslagen van Feyenoord O21 en de Jong-teams, plus per Jong-team het
+verschil in punten met de nummer 8 van de Tweede Divisie (de referentieclub, zie afstand()). Leest data.json (zoals scrape.py die bewaart).
 
 Kleuren: groen = gunstig voor Feyenoord (winst van O21, verlies van een Jong-team), rood = ongunstig,
 geel = gelijkspel.
@@ -46,7 +46,7 @@ def beoordeel(m, club, sectie):
 
 
 def afstand(td, naam):
-    """(positie, punten tot de referentie) van een Jong-team in de Tweede Divisie; punten is None in het linkerrijtje.
+    """(positie, punten achter de referentie, referentieclub) van een Jong-team; punten is None in het linkerrijtje.
 
     De referentie is de 8e club zonder Jong-team: Feyenoord hoeft maar één Jong-team in het rechterrijtje te hebben,
     dus beide Jong-teams moeten in het linkerrijtje (plek 1 t/m 9) eindigen om Feyenoord tegen te houden. Staat er
@@ -58,7 +58,7 @@ def afstand(td, naam):
     if not row or len(rest) <= index:
         return None
     ref = rest[index]
-    return row["pos"], (max(ref["pt"] - row["pt"], 0) if row["pos"] > 9 else None)
+    return row["pos"], (max(ref["pt"] - row["pt"], 0) if row["pos"] > 9 else None), ref
 
 
 def punten(n):
@@ -106,9 +106,14 @@ def maak(data, today):
 
     # afstand tot het linkerrijtje
     yb = y0 + 3 * (hh + gap) + 6
-    d.text((56, yb + 14), "TWEEDE DIVISIE: AFSTAND TOT HET LINKERRIJTJE", font=font(26, True), fill=RED, anchor="lm")
     td = data["td"]["table"]
     jong = [n for s, n, _ in TEAMS if s == "td"]
+    ref = next((r[2] for r in (afstand(td, n) for n in jong) if r), None)
+    kop = (f"TWEEDE DIVISIE: VERSCHIL MET NUMMER {ref['pos']} ({kort(ref['team'])}, {punten(ref['pt'])})".upper()
+           if ref else "TWEEDE DIVISIE")
+    kopfont = next((font(z, True) for z in range(26, 17, -1) if d.textlength(kop, font=font(z, True)) <= W - 112),
+                   font(18, True))
+    d.text((56, yb + 14), kop, font=kopfont, fill=RED, anchor="lm")
     for j, naam in enumerate(jong):
         x0 = 40 + j * 780
         d.rounded_rectangle((x0, yb + 42, x0 + 740, yb + 170), radius=22, fill="#FDE3E5")
@@ -116,16 +121,16 @@ def maak(data, today):
         res = afstand(td, naam)
         if not res:
             continue
-        pos, gap = res
+        pos, gap, ref = res
         if gap is None:
             d.text((x0 + 34, yb + 130), "in het linkerrijtje", font=font(42, True), fill=REDD, anchor="lm")
         elif gap == 0:
-            d.text((x0 + 34, yb + 130), "gelijk met het linkerrijtje", font=font(42, True), fill=REDD, anchor="lm")
+            d.text((x0 + 34, yb + 130), f"gelijk met nummer {ref['pos']}", font=font(42, True), fill=REDD, anchor="lm")
         else:
             f1 = font(68, True)
             d.text((x0 + 34, yb + 130), str(gap), font=f1, fill=RED, anchor="lm")
             d.text((x0 + 34 + d.textlength(str(gap), font=f1) + 18, yb + 134),
-                   "punt van het linkerrijtje" if gap == 1 else "punten van het linkerrijtje",
+                   f"punt achter nummer {ref['pos']}" if gap == 1 else f"punten achter nummer {ref['pos']}",
                    font=font(34), fill=INK, anchor="lm")
 
     d.text((56, H - 20), "Groen = gunstig voor Feyenoord (winst van O21, verlies van een Jong-team). "
@@ -139,14 +144,23 @@ def tekst(data, rijen, dag):
         if m:
             regels.append(f'{kort(m["home"])} - {kort(m["away"])} {m["score"].replace(" ", "")}')
     td = data["td"]["table"]
-    stand = []
-    for _, naam, _ in (t for t in TEAMS if t[0] == "td"):
-        res = afstand(td, naam)
-        if res:
-            pos, gap = res
-            stand.append(f"{naam}: " + ("in het linkerrijtje" if gap is None else punten(gap) + " van het linkerrijtje"))
     kop = f"De uitslagen van {WEEKDAYS[dag.weekday()]} {dag.day} {MONTHS[dag.month - 1]}:"
-    return kop + "\n\n" + "\n".join(regels) + "\n\n" + "\n".join(stand) + "\n\n#Feyenoord #TweedeDivisie"
+
+    def bouw(met_club):
+        stand = []
+        for _, naam, _ in (t for t in TEAMS if t[0] == "td"):
+            res = afstand(td, naam)
+            if res:
+                pos, gap, ref = res
+                if gap is None:
+                    stand.append(f"{naam}: in het linkerrijtje")
+                else:
+                    zin = "gelijk met" if gap == 0 else f"{punten(gap)} achter"
+                    stand.append(f"{naam}: {zin} nr. {ref['pos']}" + (f" ({kort(ref['team'])})" if met_club else ""))
+        return kop + "\n\n" + "\n".join(regels) + "\n\n" + "\n".join(stand) + "\n\n#Feyenoord #TweedeDivisie"
+
+    tekst_ = bouw(True)
+    return tekst_ if len(tekst_) <= 300 else bouw(False)  # Bluesky staat maximaal 300 tekens toe
 
 
 if __name__ == "__main__":
