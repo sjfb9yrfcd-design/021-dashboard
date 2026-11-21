@@ -77,24 +77,24 @@
   "matches": {
    "Feyenoord O21": {
     "last": {
-     "date": "2026-11-07",
+     "date": "2026-11-21",
      "time": "12:15",
      "home": "Feyenoord O21",
-     "away": "FC Groningen O21",
-     "score": "3-2"
+     "away": "Willem II O21",
+     "score": "4-2"
     },
     "next": [
-     {
-      "date": "2026-11-21",
-      "time": "12:15",
-      "home": "Feyenoord O21",
-      "away": "Willem II O21",
-      "score": null
-     },
      {
       "date": "2026-11-28",
       "time": "18:00",
       "home": "SC Cambuur O21",
+      "away": "Feyenoord O21",
+      "score": null
+     },
+     {
+      "date": "2026-12-01",
+      "time": "14:00",
+      "home": "De Graafschap O21",
       "away": "Feyenoord O21",
       "score": null
      }
@@ -124,21 +124,21 @@
    },
    {
     "pos": 3,
+    "team": "Kozakken Boys",
+    "gs": 14,
+    "dv": 35,
+    "dt": 17,
+    "ds": 18,
+    "pt": 28
+   },
+   {
+    "pos": 4,
     "team": "IJsselmeervogels",
     "gs": 14,
     "dv": 22,
     "dt": 14,
     "ds": 8,
     "pt": 28
-   },
-   {
-    "pos": 4,
-    "team": "Kozakken Boys",
-    "gs": 13,
-    "dv": 33,
-    "dt": 15,
-    "ds": 18,
-    "pt": 27
    },
    {
     "pos": 5,
@@ -161,11 +161,11 @@
    {
     "pos": 7,
     "team": "De Treffers",
-    "gs": 13,
-    "dv": 31,
-    "dt": 19,
+    "gs": 14,
+    "dv": 33,
+    "dt": 21,
     "ds": 12,
-    "pt": 22
+    "pt": 23
    },
    {
     "pos": 8,
@@ -270,11 +270,11 @@
   "matches": {
    "Jong Sparta": {
     "last": {
-     "date": "2026-11-14",
+     "date": "2026-11-21",
      "time": "",
-     "home": "Kozakken Boys",
-     "away": "Jong Sparta",
-     "score": "3-1"
+     "home": "Jong Sparta",
+     "away": "Quick Boys",
+     "score": "0-1"
     },
     "next": [
      {
