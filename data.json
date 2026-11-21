@@ -107,11 +107,11 @@
    {
     "pos": 1,
     "team": "Quick Boys",
-    "gs": 13,
-    "dv": 36,
+    "gs": 14,
+    "dv": 37,
     "dt": 10,
-    "ds": 26,
-    "pt": 34
+    "ds": 27,
+    "pt": 37
    },
    {
     "pos": 2,
@@ -125,10 +125,10 @@
    {
     "pos": 3,
     "team": "IJsselmeervogels",
-    "gs": 13,
-    "dv": 21,
-    "dt": 11,
-    "ds": 10,
+    "gs": 14,
+    "dv": 22,
+    "dt": 14,
+    "ds": 8,
     "pt": 28
    },
    {
@@ -169,8 +169,8 @@
    },
    {
     "pos": 8,
-    "team": "Barendrecht",
-    "gs": 13,
+    "team": "Spakenburg",
+    "gs": 14,
     "dv": 22,
     "dt": 21,
     "ds": 1,
@@ -178,12 +178,12 @@
    },
    {
     "pos": 9,
-    "team": "Spakenburg",
-    "gs": 13,
-    "dv": 19,
-    "dt": 21,
-    "ds": -2,
-    "pt": 17
+    "team": "Barendrecht",
+    "gs": 14,
+    "dv": 24,
+    "dt": 24,
+    "ds": 0,
+    "pt": 20
    },
    {
     "pos": 10,
@@ -196,6 +196,15 @@
    },
    {
     "pos": 11,
+    "team": "Jong Almere City",
+    "gs": 14,
+    "dv": 27,
+    "dt": 29,
+    "ds": -2,
+    "pt": 16
+   },
+   {
+    "pos": 12,
     "team": "Rijnsburgse Boys",
     "gs": 14,
     "dv": 20,
@@ -204,7 +213,7 @@
     "pt": 16
    },
    {
-    "pos": 12,
+    "pos": 13,
     "team": "HFC",
     "gs": 14,
     "dv": 21,
@@ -213,7 +222,7 @@
     "pt": 15
    },
    {
-    "pos": 13,
+    "pos": 14,
     "team": "Katwijk",
     "gs": 14,
     "dv": 17,
@@ -222,16 +231,16 @@
     "pt": 15
    },
    {
-    "pos": 14,
+    "pos": 15,
     "team": "Jong Sparta",
-    "gs": 13,
+    "gs": 14,
     "dv": 34,
-    "dt": 32,
-    "ds": 2,
+    "dt": 33,
+    "ds": 1,
     "pt": 14
    },
    {
-    "pos": 15,
+    "pos": 16,
     "team": "Hoek",
     "gs": 14,
     "dv": 16,
@@ -240,30 +249,21 @@
     "pt": 14
    },
    {
-    "pos": 16,
-    "team": "Jong Almere City",
-    "gs": 13,
-    "dv": 24,
-    "dt": 28,
-    "ds": -4,
-    "pt": 13
-   },
-   {
     "pos": 17,
     "team": "Kloetinge",
-    "gs": 13,
-    "dv": 19,
-    "dt": 36,
-    "ds": -17,
-    "pt": 7
+    "gs": 14,
+    "dv": 22,
+    "dt": 38,
+    "ds": -16,
+    "pt": 10
    },
    {
     "pos": 18,
     "team": "Rohda Raalte",
-    "gs": 13,
+    "gs": 14,
     "dv": 11,
-    "dt": 38,
-    "ds": -27,
+    "dt": 41,
+    "ds": -30,
     "pt": 2
    }
   ],
@@ -330,6 +330,17 @@
    "ref_pos": 8,
    "ref_pt": 20,
    "ronde": 13,
+   "datum": "2026-11-21"
+  },
+  "14": {
+   "team": "Jong Sparta",
+   "pos": 15,
+   "pt": 14,
+   "gap": 6,
+   "referentie": "Spakenburg",
+   "ref_pos": 8,
+   "ref_pt": 20,
+   "ronde": 14,
    "datum": "2026-11-21"
   }
  },
