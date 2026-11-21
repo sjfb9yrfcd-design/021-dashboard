@@ -35,6 +35,7 @@ FEEST_DAGEN = 14
 SECTIONS = {
     "o21": {
         "stand_url": "https://www.feyenoord.com/nl/academy/teams/feyenoord-o21",
+        "programma": "o21.json",  # wedstrijden en uitslagen vul je zelf in (zie o21.json); de stand komt van de site
         "focus": {
             "Feyenoord O21": ["https://www.feyenoord.com/nl/academy/teams/feyenoord-o21"],
         },
@@ -626,10 +627,52 @@ def handmatige_wedstrijden(focus):
     return out
 
 
+RE_SCORE_HANDMATIG = re.compile(r"^\s*(\d{1,2})\s*[-:]\s*(\d{1,2})")
+
+
+def programma_wedstrijden(pad, focus, namen, today):
+    """Leest het handmatige programma (bijv. o21.json) en geeft de wedstrijden in dezelfde vorm als parse_matches.
+
+    Per wedstrijd: datum, tijd (mag leeg), thuis, uit en score (thuis-uit, null = nog niet gespeeld).
+    Een fout in het bestand geeft een ValueError: scrape.py laat dan de oude gegevens staan en toont een waarschuwing."""
+    try:
+        rijen = json.loads(pad.read_text(encoding="utf-8"))["wedstrijden"]
+    except Exception as e:
+        raise ValueError(f"{pad.name} is niet te lezen ({e}). Let op komma's en aanhalingstekens.")
+    out = []
+    for i, r in enumerate(rijen, 1):
+        try:
+            datum = dt.date.fromisoformat(r["datum"]).isoformat()
+            home, away = str(r["thuis"]), str(r["uit"])
+        except Exception as e:
+            raise ValueError(f"{pad.name}: wedstrijd {i} klopt niet ({e!r}).")
+        if focus not in (home, away):
+            raise ValueError(f"{pad.name}: bij wedstrijd {i} ({datum}) komt '{focus}' niet voor als thuis of uit.")
+        for naam in (home, away):
+            if naam not in namen:
+                print(f"WAARSCHUWING {pad.name}: '{naam}' staat niet in de stand (andere schrijfwijze?)")
+        score = r.get("score")
+        if score in (None, ""):
+            sc = None
+            if datum < today:
+                print(f"::warning::{pad.name}: uitslag ontbreekt voor {datum} {home} - {away}")
+        else:
+            m = RE_SCORE_HANDMATIG.match(str(score))
+            if not m:
+                raise ValueError(f"{pad.name}: score '{score}' bij {datum} {home} - {away} klopt niet (gebruik bijvoorbeeld 3-2).")
+            sc = f"{int(m[1])}-{int(m[2])}"
+        out.append({"date": datum, "time": r.get("tijd") or "", "home": home, "away": away, "score": sc})
+    return out
+
+
 def scrape_section(key, today):
     cfg = SECTIONS[key]
     table = parse_standings(fetch(cfg["stand_url"]))
     names = [r["team"] for r in table]
+    if cfg.get("programma"):  # wedstrijden uit eigen bestand in plaats van van de site
+        pad = ROOT / cfg["programma"]
+        return {"table": table, "matches": {focus: pick(programma_wedstrijden(pad, focus, names, today), today)
+                                            for focus in cfg["focus"]}}
     matches = {}
     for focus, urls in cfg["focus"].items():
         found = []
