@@ -93,7 +93,7 @@
      },
      {
       "date": "2026-12-01",
-      "time": "14:00",
+      "time": "",
       "home": "De Graafschap O21",
       "away": "Feyenoord O21",
       "score": null
@@ -271,7 +271,7 @@
    "Jong Sparta": {
     "last": {
      "date": "2026-11-21",
-     "time": "",
+     "time": "15:00",
      "home": "Jong Sparta",
      "away": "Quick Boys",
      "score": "0-1"
