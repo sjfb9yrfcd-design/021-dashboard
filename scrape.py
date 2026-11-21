@@ -19,6 +19,7 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).parent
 DATA = ROOT / "data.json"
 OUT = ROOT / "docs" / "index.html"
+HANDMATIG = ROOT / "handmatig.json"  # wedstrijden die je zelf invult als de bron ze mist
 TEMPLATE = ROOT / "template.html"
 DEBUG = "--debug" in sys.argv
 KAMPIOEN_HANDMATIG = "--kampioen" in sys.argv  # handmatig doorgeven dat Feyenoord najaarskampioen is
@@ -606,6 +607,25 @@ def build_html(data, warnings):
 
 
 # ---------------------------------------------------------------- hoofdprogramma
+def handmatige_wedstrijden(focus):
+    """Wedstrijden uit handmatig.json voor dit team. Alleen regels met een echte score (bijv. "1-2") tellen mee."""
+    if not HANDMATIG.exists():
+        return []
+    try:
+        alles = json.loads(HANDMATIG.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"WAARSCHUWING: handmatig.json is niet te lezen: {e}")
+        return []
+    out = []
+    for m in alles.get(focus, []):
+        score = str(m.get("score") or "").replace(" ", "")
+        if not re.fullmatch(r"\d{1,2}-\d{1,2}", score):
+            print(f"Handmatig overgeslagen (nog geen geldige score): {focus} {m.get('date')} {m.get('home')} - {m.get('away')}")
+            continue
+        out.append({"date": m["date"], "time": m.get("time", ""), "home": m["home"], "away": m["away"], "score": score})
+    return out
+
+
 def scrape_section(key, today):
     cfg = SECTIONS[key]
     table = parse_standings(fetch(cfg["stand_url"]))
@@ -624,6 +644,8 @@ def scrape_section(key, today):
             old = merged.get(k)
             if old is None or (m["score"] and not old["score"]) or (m["time"] and not old["time"] and not old["score"]):
                 merged[k] = m
+        for m in handmatige_wedstrijden(focus):  # jouw invoer wint van wat de site laat zien
+            merged[(m["date"], m["home"], m["away"])] = m
         found = list(merged.values())
         matches[focus] = pick(found, today)
         if DEBUG:
