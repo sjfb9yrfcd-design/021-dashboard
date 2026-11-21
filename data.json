@@ -115,6 +115,15 @@
    },
    {
     "pos": 2,
+    "team": "HHC",
+    "gs": 14,
+    "dv": 25,
+    "dt": 16,
+    "ds": 9,
+    "pt": 30
+   },
+   {
+    "pos": 3,
     "team": "IJsselmeervogels",
     "gs": 13,
     "dv": 21,
@@ -123,7 +132,7 @@
     "pt": 28
    },
    {
-    "pos": 3,
+    "pos": 4,
     "team": "Kozakken Boys",
     "gs": 13,
     "dv": 33,
@@ -132,40 +141,31 @@
     "pt": 27
    },
    {
-    "pos": 4,
-    "team": "HHC",
-    "gs": 13,
-    "dv": 24,
-    "dt": 16,
-    "ds": 8,
-    "pt": 27
-   },
-   {
     "pos": 5,
     "team": "GVVV",
-    "gs": 13,
-    "dv": 30,
-    "dt": 23,
+    "gs": 14,
+    "dv": 31,
+    "dt": 24,
     "ds": 7,
-    "pt": 24
+    "pt": 25
    },
    {
     "pos": 6,
+    "team": "Volendam (amateurs)",
+    "gs": 14,
+    "dv": 26,
+    "dt": 23,
+    "ds": 3,
+    "pt": 24
+   },
+   {
+    "pos": 7,
     "team": "De Treffers",
     "gs": 13,
     "dv": 31,
     "dt": 19,
     "ds": 12,
     "pt": 22
-   },
-   {
-    "pos": 7,
-    "team": "Volendam (amateurs)",
-    "gs": 13,
-    "dv": 24,
-    "dt": 22,
-    "ds": 2,
-    "pt": 21
    },
    {
     "pos": 8,
@@ -178,15 +178,6 @@
    },
    {
     "pos": 9,
-    "team": "AFC",
-    "gs": 13,
-    "dv": 22,
-    "dt": 24,
-    "ds": -2,
-    "pt": 17
-   },
-   {
-    "pos": 10,
     "team": "Spakenburg",
     "gs": 13,
     "dv": 19,
@@ -195,25 +186,43 @@
     "pt": 17
    },
    {
+    "pos": 10,
+    "team": "AFC",
+    "gs": 14,
+    "dv": 23,
+    "dt": 26,
+    "ds": -3,
+    "pt": 17
+   },
+   {
     "pos": 11,
-    "team": "HFC",
-    "gs": 13,
-    "dv": 21,
-    "dt": 23,
-    "ds": -2,
-    "pt": 15
+    "team": "Rijnsburgse Boys",
+    "gs": 14,
+    "dv": 20,
+    "dt": 33,
+    "ds": -13,
+    "pt": 16
    },
    {
     "pos": 12,
-    "team": "Katwijk",
-    "gs": 13,
-    "dv": 17,
-    "dt": 26,
-    "ds": -9,
+    "team": "HFC",
+    "gs": 14,
+    "dv": 21,
+    "dt": 24,
+    "ds": -3,
     "pt": 15
    },
    {
     "pos": 13,
+    "team": "Katwijk",
+    "gs": 14,
+    "dv": 17,
+    "dt": 28,
+    "ds": -11,
+    "pt": 15
+   },
+   {
+    "pos": 14,
     "team": "Jong Sparta",
     "gs": 13,
     "dv": 34,
@@ -222,30 +231,21 @@
     "pt": 14
    },
    {
-    "pos": 14,
+    "pos": 15,
+    "team": "Hoek",
+    "gs": 14,
+    "dv": 16,
+    "dt": 24,
+    "ds": -8,
+    "pt": 14
+   },
+   {
+    "pos": 16,
     "team": "Jong Almere City",
     "gs": 13,
     "dv": 24,
     "dt": 28,
     "ds": -4,
-    "pt": 13
-   },
-   {
-    "pos": 15,
-    "team": "Hoek",
-    "gs": 13,
-    "dv": 15,
-    "dt": 23,
-    "ds": -8,
-    "pt": 13
-   },
-   {
-    "pos": 16,
-    "team": "Rijnsburgse Boys",
-    "gs": 13,
-    "dv": 18,
-    "dt": 33,
-    "ds": -15,
     "pt": 13
    },
    {
@@ -278,42 +278,42 @@
     },
     "next": [
      {
-      "date": "2026-11-21",
-      "time": "15:00",
-      "home": "Jong Sparta",
-      "away": "Quick Boys",
-      "score": null
-     },
-     {
       "date": "2026-11-28",
       "time": "15:00",
       "home": "IJsselmeervogels",
       "away": "Jong Sparta",
+      "score": null
+     },
+     {
+      "date": "2026-12-05",
+      "time": "15:00",
+      "home": "Jong Sparta",
+      "away": "Kloetinge",
       "score": null
      }
     ]
    },
    "Jong Almere City": {
     "last": {
-     "date": "2026-11-14",
+     "date": "2026-11-21",
      "time": "",
-     "home": "Quick Boys",
-     "away": "Jong Almere City",
-     "score": "2-1"
+     "home": "Jong Almere City",
+     "away": "IJsselmeervogels",
+     "score": "3-1"
     },
     "next": [
-     {
-      "date": "2026-11-21",
-      "time": "15:00",
-      "home": "Jong Almere City",
-      "away": "IJsselmeervogels",
-      "score": null
-     },
      {
       "date": "2026-11-28",
       "time": "15:00",
       "home": "Kloetinge",
       "away": "Jong Almere City",
+      "score": null
+     },
+     {
+      "date": "2026-12-05",
+      "time": "15:00",
+      "home": "Jong Almere City",
+      "away": "GVVV",
       "score": null
      }
     ]
@@ -323,7 +323,7 @@
  "historie": {
   "13": {
    "team": "Jong Almere City",
-   "pos": 14,
+   "pos": 16,
    "pt": 13,
    "gap": 7,
    "referentie": "Barendrecht",
