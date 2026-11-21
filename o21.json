@@ -1,0 +1,19 @@
+{
+  "_uitleg": "Programma van Feyenoord O21 (najaarscompetitie). Na een wedstrijd vul je alleen de score in: eerst de doelpunten van de thuisploeg, dan die van de uitploeg, bijvoorbeeld '3-2', tussen aanhalingstekens (zonder ruststand). Staat er null, dan is de wedstrijd nog niet gespeeld. De tijd mag leeg blijven. Let op de komma's en aanhalingstekens.",
+  "wedstrijden": [
+    {"ronde": 1, "datum": "2026-08-29", "tijd": "", "thuis": "FC Twente / Heracles Academie O21", "uit": "Feyenoord O21", "score": "0-3"},
+    {"ronde": 2, "datum": "2026-09-05", "tijd": "", "thuis": "Feyenoord O21", "uit": "Go Ahead Eagles O21", "score": "4-1"},
+    {"ronde": 3, "datum": "2026-09-13", "tijd": "", "thuis": "Willem II O21", "uit": "Feyenoord O21", "score": "2-3"},
+    {"ronde": 4, "datum": "2026-09-19", "tijd": "", "thuis": "Feyenoord O21", "uit": "PEC Zwolle O21", "score": "4-0"},
+    {"ronde": 7, "datum": "2026-10-10", "tijd": "", "thuis": "FC Groningen O21", "uit": "Feyenoord O21", "score": "1-4"},
+    {"ronde": 6, "datum": "2026-10-17", "tijd": "", "thuis": "Feyenoord O21", "uit": "De Graafschap O21", "score": "4-0"},
+    {"ronde": 8, "datum": "2026-10-24", "tijd": "", "thuis": "Feyenoord O21", "uit": "SC Cambuur O21", "score": "2-0"},
+    {"ronde": 9, "datum": "2026-10-31", "tijd": "", "thuis": "PEC Zwolle O21", "uit": "Feyenoord O21", "score": "1-2"},
+    {"ronde": 10, "datum": "2026-11-07", "tijd": "12:15", "thuis": "Feyenoord O21", "uit": "FC Groningen O21", "score": "3-2"},
+    {"ronde": 12, "datum": "2026-11-21", "tijd": "12:15", "thuis": "Feyenoord O21", "uit": "Willem II O21", "score": "4-2"},
+    {"ronde": 5, "datum": "2026-11-28", "tijd": "18:00", "thuis": "SC Cambuur O21", "uit": "Feyenoord O21", "score": null},
+    {"ronde": 11, "datum": "2026-12-01", "tijd": "", "thuis": "De Graafschap O21", "uit": "Feyenoord O21", "score": null},
+    {"ronde": 13, "datum": "2026-12-05", "tijd": "", "thuis": "Feyenoord O21", "uit": "FC Twente / Heracles Academie O21", "score": null},
+    {"ronde": 14, "datum": "2026-12-12", "tijd": "", "thuis": "Go Ahead Eagles O21", "uit": "Feyenoord O21", "score": null}
+  ]
+}
