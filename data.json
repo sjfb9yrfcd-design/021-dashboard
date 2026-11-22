@@ -330,7 +330,15 @@
    "ref_pos": 8,
    "ref_pt": 20,
    "ronde": 13,
-   "datum": "2026-11-21"
+   "datum": "2026-11-21",
+   "teams": {
+    "Jong Sparta": {
+     "gap": 6
+    },
+    "Jong Almere City": {
+     "gap": 7
+    }
+   }
   },
   "14": {
    "team": "Jong Sparta",
@@ -341,7 +349,19 @@
    "ref_pos": 8,
    "ref_pt": 20,
    "ronde": 14,
-   "datum": "2026-11-21"
+   "datum": "2026-11-22",
+   "teams": {
+    "Jong Almere City": {
+     "pos": 11,
+     "pt": 16,
+     "gap": 4
+    },
+    "Jong Sparta": {
+     "pos": 15,
+     "pt": 14,
+     "gap": 6
+    }
+   }
   }
  },
  "najaarskampioen": {
