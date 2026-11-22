@@ -387,8 +387,14 @@ def jong_status(td):
             "referentie": ref["team"], "ref_pos": ref["pos"], "ref_pt": ref["pt"]}
 
 
+# Eenmalige aanvulling: afstand van beide Jong-teams tot de nummer 8/9 in rondes waarvan alleen het laagste
+# Jong-team bewaard was. Wordt alleen gebruikt als een ronde nog geen "teams" heeft.
+HISTORIE_AANVULLING = {13: {"Jong Sparta": 6, "Jong Almere City": 7}}
+
+
 def update_historie(data, today):
-    """Bewaart per speelronde de positie van het laagste Jong-team en de afstand tot het linkerrijtje.
+    """Bewaart per speelronde de positie van het laagste Jong-team en de afstand tot de nummer 8/9, plus de
+    afstand van beide Jong-teams ("teams", voor de grafiek).
 
     De speelronde is het mediane aantal gespeelde wedstrijden in de Tweede Divisie. Binnen dezelfde ronde
     wordt de laatste stand bewaard, zodat de waarde aan het eind van de ronde blijft staan."""
@@ -397,7 +403,72 @@ def update_historie(data, today):
     if not td or not status:
         return
     ronde = statistics.median_low([r["gs"] for r in td])
-    data.setdefault("historie", {})[str(ronde)] = dict(status, ronde=ronde, datum=today)
+    ref_pt = status["ref_pt"]
+    teams = {r["team"]: {"pos": r["pos"], "pt": r["pt"], "gap": ref_pt - r["pt"]}
+             for r in td if r["team"] in SECTIONS["td"]["highlight"]}
+    historie = data.setdefault("historie", {})
+    historie[str(ronde)] = dict(status, ronde=ronde, datum=today, teams=teams)
+    for r, gaps in HISTORIE_AANVULLING.items():
+        e = historie.get(str(r))
+        if e is not None and "teams" not in e:
+            e["teams"] = {naam: {"gap": g} for naam, g in gaps.items()}
+
+
+JONG_KLEUREN = {"Jong Sparta": ("var(--red)", ""), "Jong Almere City": ("var(--ink)", "6 4")}
+
+
+def verloop_jong_svg(hist):
+    """Lijngrafiek: afstand in punten tot de nummer 8/9 per speelronde, voor elk Jong-team een eigen lijn.
+
+    Hoger = verder van het linkerrijtje = gunstig voor Feyenoord. De nul-lijn is de nummer 8/9 zelf."""
+    rondes = [e for e in hist if e.get("teams")]
+    if len(rondes) < 2:
+        return ""
+    namen = [n for n in SECTIONS["td"]["highlight"] if any(n in e["teams"] for e in rondes)]
+    waarden = [e["teams"][n]["gap"] for e in rondes for n in namen if n in e["teams"]]
+    lo, hi = min(0, min(waarden)), max(waarden)
+    stap = next(z for z in (1, 2, 5, 10, 20) if (hi - lo) / z <= 5)
+    lo, hi = (lo // stap) * stap, -(-hi // stap) * stap
+    W, H, L, R, T, B = 320, 208, 28, 16, 16, 38
+    n = len(rondes)
+    x = lambda i: L + (W - L - R) * (i / (n - 1) if n > 1 else 0.5)
+    y = lambda v: T + (H - T - B) * (1 - (v - lo) / (hi - lo))
+    delen = []
+    for t in range(lo, hi + 1, stap):
+        zwaar = t == 0
+        delen.append(f'<line x1="{L}" y1="{y(t):.1f}" x2="{W - R}" y2="{y(t):.1f}" stroke="var(--mute)" '
+                     f'stroke-width="{1.2 if zwaar else 0.5}" opacity="{0.9 if zwaar else 0.35}"/>'
+                     f'<text x="{L - 5}" y="{y(t) + 3.5:.1f}" text-anchor="end" font-size="10" fill="var(--mute)">{t}</text>')
+    toon = set(range(n)) if n <= 10 else {0, n - 1}
+    for k, naam in enumerate(namen):
+        kleur, streep = JONG_KLEUREN.get(naam, ("var(--red)", ""))
+        punten_ = [(i, e["teams"][naam]["gap"]) for i, e in enumerate(rondes) if naam in e["teams"]]
+        poly = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in punten_)
+        dash = f' stroke-dasharray="{streep}"' if streep else ""
+        delen.append(f'<polyline points="{poly}" fill="none" stroke="{kleur}" stroke-width="2"{dash}/>')
+        for i, v in punten_:
+            # het team met de hoogste waarde in die ronde krijgt het label boven de stip, de ander eronder (gelijk:
+            # het eerste team boven), zodat de labels elkaar en de lijnen niet overlappen
+            anderen = [rondes[i]["teams"][m]["gap"] for m in namen if m != naam and m in rondes[i]["teams"]]
+            boven = all(v > a or (v == a and k == 0) for a in anderen)
+            ry = y(v) - 7 if boven else y(v) + 15
+            delen.append(f'<circle cx="{x(i):.1f}" cy="{y(v):.1f}" r="3.2" fill="{kleur}"><title>Ronde {rondes[i]["ronde"]}: '
+                         f'{esc(naam)} {v} punten</title></circle>'
+                         + (f'<text x="{x(i):.1f}" y="{ry:.1f}" text-anchor="middle" font-size="10" font-weight="700" '
+                            f'fill="{kleur}">{v}</text>' if i in toon or i == punten_[-1][0] else ""))
+    stappen = 1 if n <= 8 else 2
+    for i, e in enumerate(rondes):
+        if i % stappen == 0 or i == n - 1:
+            delen.append(f'<text x="{x(i):.1f}" y="{H - 16}" text-anchor="middle" font-size="10" fill="var(--mute)">{e["ronde"]}</text>')
+    delen.append(f'<text x="{(L + W - R) / 2:.1f}" y="{H - 4}" text-anchor="middle" font-size="9" fill="var(--mute)">speelronde</text>')
+    legenda = "".join(
+        f'<span style="display:inline-flex;align-items:center;gap:6px;margin-right:16px"><svg width="26" height="8" aria-hidden="true">'
+        f'<line x1="0" y1="4" x2="26" y2="4" stroke="{JONG_KLEUREN.get(nm, ("var(--red)", ""))[0]}" stroke-width="2"'
+        + (f' stroke-dasharray="{JONG_KLEUREN.get(nm, ("", ""))[1]}"' if JONG_KLEUREN.get(nm, ("", ""))[1] else "")
+        + f'/></svg>{esc(nm)}</span>' for nm in namen)
+    return (f'<div style="font-size:13px;margin-bottom:6px">{legenda}</div>'
+            f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="Punten achter de nummer 8 of 9 per speelronde, per Jong-team" '
+            f'style="width:100%;max-width:560px;height:auto">' + "".join(delen) + "</svg>")
 
 
 def verloop_svg(hist):
@@ -519,7 +590,12 @@ def historie_html(data):
               'of de nummer 9 als een Jong-team al in de top 8 staat), want beide Jong-teams moeten in het linkerrijtje '
               'eindigen om Feyenoord tegen te houden; &Delta; = verandering ten opzichte van de vorige ronde. Een grotere afstand (groen) is gunstig voor Feyenoord, een kleinere (rood) niet. '
               'Per speelronde wordt de laatst bekende stand bewaard.</p>')
-    return ('<h2 class="j">Jong-teams: verloop per speelronde</h2><div class="grid"><div class="card scroll">'
+    jong_grafiek = verloop_jong_svg(hist)
+    kaart = ('<h2 class="j">Afstand per Jong-team</h2><div class="grid"><div class="card">' + jong_grafiek
+             + '<p class="uitleg">Punten achter de nummer 8 (of de nummer 9 als een Jong-team al in de top 8 staat); '
+               'hoger is gunstiger voor Feyenoord. De dikke lijn bij 0 is de nummer 8/9 zelf: onder die lijn staat een '
+               'Jong-team boven de referentie.</p></div></div>') if jong_grafiek else ""
+    return (kaart + '<h2 class="j">Jong-teams: verloop per speelronde</h2><div class="grid"><div class="card scroll">'
             + tabel + grafiek + uitleg + '</div></div>')
 
 
