@@ -13,11 +13,11 @@
    {
     "pos": 2,
     "team": "PEC Zwolle O21",
-    "gs": 11,
-    "dv": 16,
-    "dt": 13,
-    "ds": 3,
-    "pt": 19
+    "gs": 12,
+    "dv": 18,
+    "dt": 14,
+    "ds": 4,
+    "pt": 22
    },
    {
     "pos": 3,
@@ -30,20 +30,20 @@
    },
    {
     "pos": 4,
-    "team": "FC Twente / Heracles Academie O21",
-    "gs": 11,
-    "dv": 18,
-    "dt": 20,
-    "ds": -2,
-    "pt": 14
-   },
-   {
-    "pos": 5,
     "team": "FC Groningen O21",
     "gs": 11,
     "dv": 22,
     "dt": 27,
     "ds": -5,
+    "pt": 14
+   },
+   {
+    "pos": 5,
+    "team": "FC Twente / Heracles Academie O21",
+    "gs": 12,
+    "dv": 19,
+    "dt": 22,
+    "ds": -3,
     "pt": 14
    },
    {
@@ -349,7 +349,7 @@
    "ref_pos": 8,
    "ref_pt": 20,
    "ronde": 14,
-   "datum": "2026-11-24",
+   "datum": "2026-11-25",
    "teams": {
     "Jong Almere City": {
      "pos": 11,
